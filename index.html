@@ -7,31 +7,25 @@
     <style>
         * { box-sizing: border-box; }
         :root {
-            --bg-color: #CFBD70;
-            --text-color: #000000;
-            --video-bg: #000000;
-        }
-
-        body.dark-mode {
             --bg-color: #0000FF;
             --text-color: #ffffff;
             --video-bg: #111111;
         }
 
       body {
-    margin: 0;
-    padding: 4vw;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    text-transform: uppercase;
-    font-size: 90%;
-    line-height: 1.1;
-}
+        margin: 0;
+        padding: 4vw;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        text-transform: uppercase;
+        font-size: 90%;
+        line-height: 1.1;
+    }
 
         h1 {
             font-size: 4.4vw;
@@ -57,7 +51,6 @@
         }
 
         .section-heading {
-             margin-left: 25%;
             font-size: 1.8vw;
             font-weight: bold;
             margin: 0 0 1.5vw 0;
@@ -82,21 +75,23 @@
             text-transform: none;
         }
 
-    .tracklist {
+        .tracklist {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 2vw 1vw;
             list-style: none;
             padding: 0;
-            margin: 0 auto 1.5vw auto; 
-            text-align: center;
-            width: 50%; 
+            /* Slightly indented from the left edge */
+            margin: 0 0 1.5vw 4vw; 
+            text-align: left;
+            width: 60%; 
         }
 
         .track-item {
             font-size: 1.8vw;
             cursor: pointer;
             transition: opacity 0.2s ease;
+            color: #ffffff;
         }
 
         .track-item:hover, .track-item.active {
@@ -221,92 +216,68 @@
             width: 100%;
         }
 
-        .contact { margin-top: 0; font-size: 1.8vw; font-weight: bold; }
-
-        .theme-switch {
-            position: fixed;
-            top: 4vw;
-            right: 4vw;
-            z-index: 10;
-            width: 3.6vw;
-            height: 1.8vw;
-            border: 2px solid var(--text-color);
-            background: var(--bg-color);
-            border-radius: 0;
-            padding: 0;
-            cursor: pointer;
+        .contact { 
+            margin-top: 2vw; 
+            padding-top: 2vw; 
+            font-size: 1.8vw; 
+            font-weight: bold; 
         }
 
-        .theme-switch::after {
-            content: '';
-            width: 50%;
-            height: 100%;
-            background: var(--text-color);
-            display: block;
-            transform: translateX(0);
-            transition: transform 0.2s ease;
-        }
-
-        body.dark-mode .theme-switch::after {
-            transform: translateX(100%);
+        .contact a {
+            color: #f0bb67;
         }
 
         a { color: var(--text-color); text-decoration: none; }
         a:hover { text-decoration: underline; }
+        
         @media (max-width: 700px) {
-   body {
-        padding: 4vw;
-        justify-content: center; /* Ensures centering on mobile too */
-    }
+            body {
+                padding: 4vw;
+                justify-content: center; 
+            }
 
-    .contact {
-        margin-top: 0;
-        font-size: 3.5vw;
-    }
+            .contact {
+                margin-top: 4vw;
+                padding-top: 2vw;
+                margin-bottom: 2vw;
+                font-size: 3.5vw;
+            }
 
-    .section-toggle {
-        font-size: 3.5vw; /* Reduce from 1.8vw */
-    }
+            .section-toggle {
+                font-size: 3.5vw; 
+            }
 
-    .bio-content {
-        font-size: 3vw; /* Reduce from 1.62vw */
-    }
+            .bio-content {
+                font-size: 3vw; 
+            }
 
-    .play-btn {
-        font-size: 3vw; /* Reduce from 1.8vw */
-        width: 10vw;
-    }
+            .play-btn {
+                font-size: 3vw; 
+                width: 10vw;
+            }
 
-    .contact {
-        margin-top: 1.5vw;
-        margin-bottom: 2vw;
-        font-size: 3.5vw;
-    }
+            .tracklist {
+                width: 100%;
+                margin: 0 0 2vw 4vw; 
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1vw 0.5vw;
+            }
 
-    .tracklist {
-        width: 100%;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1vw 0.5vw;
-        margin-bottom: 1vw;
-    }
+            .track-item {
+                font-size: 3.5vw;
+            }
 
-    .track-item {
-        font-size: 3.5vw;
-    }
+            .time-display {
+                font-size: 2.5vw;
+            }
 
-    .time-display {
-        font-size: 2.5vw;
-    }
-
-    h1 {
-        font-size: 5vw;
-    }
-}
+            h1 {
+                font-size: 5vw;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <button id="theme-switch" class="theme-switch" type="button" aria-label="Toggle dark mode" aria-pressed="false"></button>
 
     <h1 id="name-header">JEROME PO<span class="kern-fix">T</span>TER</h1>
 
@@ -427,22 +398,6 @@
     </div>
 
   <script>
-        // 0. Dark Mode Toggle
-        const themeSwitch = document.getElementById('theme-switch');
-
-        function setDarkMode(isDark) {
-            document.body.classList.toggle('dark-mode', isDark);
-            themeSwitch.setAttribute('aria-pressed', isDark.toString());
-            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
-        }
-
-        // Set to Dark Mode by default. If it specifically evaluates to 'false', it overrides.
-        setDarkMode(localStorage.getItem('darkMode') !== 'false');
-
-        themeSwitch.addEventListener('click', () => {
-            setDarkMode(!document.body.classList.contains('dark-mode'));
-        });
-
         // 1. Expandable Section Toggle Logic
         const bioToggle = document.getElementById('bio-toggle');
         const bioContent = document.getElementById('bio-content');
@@ -503,13 +458,11 @@
             canvas.width = canvas.clientWidth * window.devicePixelRatio;
             canvas.height = canvas.clientHeight * window.devicePixelRatio;
 
-            // Pull the dynamic color from CSS variables to handle dark mode swaps
-            const computedStyle = getComputedStyle(document.body);
-            const textColor = computedStyle.getPropertyValue('--text-color').trim();
-
             canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
             canvasCtx.lineWidth = 2 * window.devicePixelRatio;
-            canvasCtx.strokeStyle = textColor;
+            
+            // Replaced generic textColor variable with the explicit CONTACT yellow hex code
+            canvasCtx.strokeStyle = '#f0bb67';
             canvasCtx.beginPath();
 
             if (analyser) {
