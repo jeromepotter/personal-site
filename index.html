@@ -18,16 +18,20 @@
             --video-bg: #111111;
         }
 
-        body {
-            margin: 0;
-            padding: 4vw;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            text-transform: uppercase;
-            font-size: 90%;
-            line-height: 1.1;
-        }
+      body {
+    margin: 0;
+    padding: 4vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    font-size: 90%;
+    line-height: 1.1;
+}
 
         h1 {
             font-size: 4.4vw;
@@ -217,7 +221,7 @@
             width: 100%;
         }
 
-        .contact { margin-top: 8vw; font-size: 1.8vw; font-weight: bold; }
+        .contact { margin-top: 0; font-size: 1.8vw; font-weight: bold; }
 
         .theme-switch {
             position: fixed;
@@ -250,8 +254,14 @@
         a { color: var(--text-color); text-decoration: none; }
         a:hover { text-decoration: underline; }
         @media (max-width: 700px) {
-    body {
-        padding: 4vw 4vw 1vw 4vw;
+   body {
+        padding: 4vw;
+        justify-content: center; /* Ensures centering on mobile too */
+    }
+
+    .contact {
+        margin-top: 0;
+        font-size: 3.5vw;
     }
 
     .section-toggle {
