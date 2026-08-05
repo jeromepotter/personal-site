@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEROME POTTER | COMPOSER</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 4vw;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        h1 {
+            font-size: 6vw; 
+            margin: 0 0 1vw 0;
+            font-weight: 700;
+            letter-spacing: 0; 
+        }
+
+        .kern-fix {
+            margin-right: 0.2vw;
+        }
+
+        .bio-section {
+            margin-bottom: 5vw;
+        }
+        .bio-toggle {
+            font-size: 2vw;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s ease;
+            user-select: none;
+        }
+        .bio-toggle:hover {
+            opacity: 0.4;
+        }
+        .bio-content {
+            display: none;
+            font-size: 1.8vw;
+            line-height: 1.4;
+            max-width: 75%;
+            margin-top: 1.5vw;
+            text-transform: none; 
+        }
+
+        .tracklist {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 4vw 0;
+        }
+        
+        .track-item {
+            font-size: 3.5vw;
+            margin-bottom: 1.5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        
+        .track-item:hover, .track-item.active {
+            opacity: 0.4;
+        }
+
+        .media-container { 
+            width: 100%; 
+            margin-top: 6vw; 
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 30vh;
+            background-color: transparent; 
+            margin-bottom: 2vw;
+        }
+
+        /* CUSTOM AUDIO PLAYER UI STYLING */
+        .custom-player {
+            display: flex;
+            align-items: center;
+            gap: 2vw;
+            font-size: 2vw;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .play-btn {
+            cursor: pointer;
+            width: 8vw; 
+            user-select: none;
+        }
+
+        .play-btn:hover {
+            opacity: 0.4;
+        }
+
+        .time-display {
+            font-size: 1.5vw;
+            min-width: 6vw;
+        }
+
+        /* Shared Seek Bar styling for both Audio and Video */
+        .seek-bar {
+            flex-grow: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .seek-bar:focus {
+            outline: none;
+        }
+
+        .seek-bar::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            background: #000000;
+        }
+        .seek-bar::-moz-range-track {
+            width: 100%;
+            height: 2px;
+            background: #000000;
+        }
+
+        .seek-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 2vw;
+            width: 0.5vw;
+            background: #000000;
+            margin-top: calc(-1vw + 1px); 
+        }
+        .seek-bar::-moz-range-thumb {
+            height: 2vw;
+            width: 0.5vw;
+            background: #000000;
+            border: none;
+            border-radius: 0;
+        }
+
+        /* NEW VIDEO GRID STYLING */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4vw;
+            margin-top: 8vw;
+            width: 100%;
+        }
+
+        .video-item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .video-title {
+            font-size: 2vw;
+            margin-bottom: 1.5vw;
+            font-weight: bold;
+        }
+
+     .portfolio-video {
+            width: 100%;
+            aspect-ratio: 16 / 9; /* Forces a uniform horizontal container */
+            object-fit: contain; /* Shrinks the video to fit without stretching */
+            background-color: #000000; /* Creates the black bars */
+            display: block;
+            margin-bottom: 1.5vw;
+            cursor: pointer;
+        }
+
+        .video-controls {
+            display: flex;
+            align-items: center;
+            gap: 2vw;
+            font-size: 2vw;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .contact { margin-top: 8vw; font-size: 2vw; font-weight: bold; }
+        a { color: #000000; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <h1 id="name-header">JEROME PO<span class="kern-fix">T</span>TER</h1>
+
+    <div class="bio-section">
+        <span id="bio-toggle" class="bio-toggle">[+] BIO</span>
+        <div id="bio-content" class="bio-content">
+            <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo DJDS, he spent 15 years recording, touring globally, and producing for artists including Kanye West, Khalid, and Burna Boy. Today, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
+        </div>
+    </div>
+
+    <ul class="tracklist">
+        <li class="track-item" data-src="audio/simplepiano.mp3">
+            <span>01. REEL HIGHLIGHTS</span>
+            <span>02:30</span>
+        </li>
+        <li class="track-item" data-src="audio/instagram-score.mp3">
+            <span>02. REEL HIGHLIGHTS PART 2</span>
+            <span>01:15</span>
+        </li>
+        <li class="track-item" data-src="audio/tampax-cue.mp3">
+            <span>03. EXCERPT FROM KATIE</span>
+            <span>01:00</span>
+        </li>
+        <li class="track-item" data-src="audio/applebees-jingle.mp3">
+            <span>04. EXCERPT FROM WORK WITH JORDAN</span>
+            <span>00:30</span>
+        </li>
+    </ul>
+
+    <div class="media-container">
+        <canvas id="visualizer"></canvas>
+        
+        <audio id="main-player">
+            <source src="audio/simplepiano.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <div class="custom-player">
+            <div id="play-btn" class="play-btn">PLAY</div>
+            <div id="time-display" class="time-display">0:00</div>
+            <input type="range" id="seek-bar" class="seek-bar" value="0" step="0.1" min="0">
+        </div>
+    </div>
+
+    <!-- 2x2 VIDEO GRID -->
+    <div class="video-grid">
+        
+        <!-- VIDEO 1 -->
+        <div class="video-item">
+            <div class="video-title">GOLF DIRECTED BY NICK WALKER</div>
+            <video class="portfolio-video" playsinline>
+                <source src="video/golf.mp4" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <div class="play-btn vid-play-btn">PLAY</div>
+                <div class="time-display vid-time-display">0:00</div>
+                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+            </div>
+        </div>
+
+        <!-- VIDEO 2 -->
+        <div class="video-item">
+            <div class="video-title">WORK FOR JORDAN</div>
+            <video class="portfolio-video" playsinline>
+                <source src="video/jordan.mp4" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <div class="play-btn vid-play-btn">PLAY</div>
+                <div class="time-display vid-time-display">0:00</div>
+                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+            </div>
+        </div>
+
+        <!-- VIDEO 3 -->
+        <div class="video-item">
+            <div class="video-title">NIKE CAMPAIGN</div>
+            <video class="portfolio-video" playsinline>
+                <source src="video/nike.mp4" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <div class="play-btn vid-play-btn">PLAY</div>
+                <div class="time-display vid-time-display">0:00</div>
+                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+            </div>
+        </div>
+
+        <!-- VIDEO 4 -->
+        <div class="video-item">
+            <div class="video-title">DOC EXCERPT 02</div>
+            <video class="portfolio-video" playsinline>
+                <source src="video/doc2.mp4" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <div class="play-btn vid-play-btn">PLAY</div>
+                <div class="time-display vid-time-display">0:00</div>
+                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="contact">
+        <a href="mailto:jerome.potter@gmail.com">CONTACT</a>
+    </div>
+
+  <script>
+        // 1. Bio Toggle Logic
+        const bioToggle = document.getElementById('bio-toggle');
+        const bioContent = document.getElementById('bio-content');
+
+        bioToggle.addEventListener('click', () => {
+            if (bioContent.style.display === 'block') {
+                bioContent.style.display = 'none';
+                bioToggle.textContent = '[+] BIO';
+            } else {
+                bioContent.style.display = 'block';
+                bioToggle.textContent = '[-] BIO';
+            }
+        });
+
+        // 2. Canvas & Visualizer Setup
+        const canvas = document.getElementById('visualizer');
+        const ctx = canvas.getContext('2d');
+        let isVisualizerRunning = false;
+
+        function drawFlatLine() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#000000';
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+        }
+
+        function resizeCanvas() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            if (!isVisualizerRunning) {
+                drawFlatLine();
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let audioCtx;
+        let analyser;
+        let dataArray;
+        let bufferLength;
+
+        // 3. Audio & Custom Player Logic
+        const audioPlayer = document.getElementById('main-player');
+        const playBtn = document.getElementById('play-btn');
+        const seekBar = document.getElementById('seek-bar');
+        const timeDisplay = document.getElementById('time-display');
+        const tracks = document.querySelectorAll('.track-item');
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                // Pause all videos before playing audio
+                document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
+                initWebAudio();
+                audioPlayer.play();
+            } else {
+                audioPlayer.pause();
+            }
+        });
+
+        audioPlayer.addEventListener('play', () => { playBtn.textContent = 'PAUSE'; });
+        audioPlayer.addEventListener('pause', () => { playBtn.textContent = 'PLAY'; });
+
+        audioPlayer.addEventListener('timeupdate', () => {
+            seekBar.value = audioPlayer.currentTime;
+            timeDisplay.textContent = formatTime(audioPlayer.currentTime);
+        });
+
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            seekBar.max = audioPlayer.duration;
+        });
+
+        seekBar.addEventListener('input', () => {
+            audioPlayer.currentTime = seekBar.value;
+        });
+        
+        function initWebAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 2048;
+                
+                const source = audioCtx.createMediaElementSource(audioPlayer);
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                
+                bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+            }
+            
+            // Safety net: Force the audio context to resume if the browser suspended it
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            
+            if (!isVisualizerRunning) {
+                isVisualizerRunning = true;
+                drawVisualizer();
+            }
+        }
+
+        tracks.forEach(track => {
+            track.addEventListener('click', function() {
+                tracks.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                const newSrc = this.getAttribute('data-src');
+                audioPlayer.src = newSrc;
+                
+                // Safety net: Force the browser to load the new source data
+                audioPlayer.load(); 
+                
+                // Pause all videos before playing a new track
+                document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
+                
+                initWebAudio();
+                
+                audioPlayer.play().catch(err => {
+                    console.log("Audio playback was blocked or failed:", err);
+                });
+            });
+        });
+
+        function drawVisualizer() {
+            requestAnimationFrame(drawVisualizer);
+            analyser.getByteTimeDomainData(dataArray);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#000000';
+            ctx.beginPath();
+
+            const sliceWidth = canvas.width / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0; 
+                const y = v * (canvas.height / 2);
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+                x += sliceWidth;
+            }
+            ctx.stroke();
+        }
+
+        // 4. Custom Grid Video Logic (Handles Multiple Videos)
+        const videoItems = document.querySelectorAll('.video-item');
+
+        videoItems.forEach(item => {
+            const vidPlayer = item.querySelector('.portfolio-video');
+            const vidPlayBtn = item.querySelector('.vid-play-btn');
+            const vidTimeDisplay = item.querySelector('.vid-time-display');
+            const vidSeekBar = item.querySelector('.vid-seek-bar');
+
+            function toggleVideo() {
+                if (vidPlayer.paused) {
+                    // 1. Pause the main audio player if it's running
+                    if (!audioPlayer.paused) {
+                        audioPlayer.pause();
+                    }
+                    
+                    // 2. Pause any other videos that might be playing
+                    document.querySelectorAll('.portfolio-video').forEach(v => {
+                        if (v !== vidPlayer && !v.paused) {
+                            v.pause();
+                        }
+                    });
+
+                    // 3. Play this specific video
+                    vidPlayer.play();
+                } else {
+                    vidPlayer.pause();
+                }
+            }
+
+            // Click events
+            vidPlayBtn.addEventListener('click', toggleVideo);
+            vidPlayer.addEventListener('click', toggleVideo);
+
+            // Update UI on play/pause
+            vidPlayer.addEventListener('play', () => { vidPlayBtn.textContent = 'PAUSE'; });
+            vidPlayer.addEventListener('pause', () => { vidPlayBtn.textContent = 'PLAY'; });
+
+            // Time and Seek Bar tracking
+            vidPlayer.addEventListener('timeupdate', () => {
+                vidSeekBar.value = vidPlayer.currentTime;
+                vidTimeDisplay.textContent = formatTime(vidPlayer.currentTime);
+            });
+
+            vidPlayer.addEventListener('loadedmetadata', () => {
+                vidSeekBar.max = vidPlayer.duration;
+            });
+
+            vidSeekBar.addEventListener('input', () => {
+                vidPlayer.currentTime = vidSeekBar.value;
+            });
+        });
+    </script>
+</body>
+</html>
