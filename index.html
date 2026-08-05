@@ -248,6 +248,35 @@
 
         a { color: var(--text-color); text-decoration: none; }
         a:hover { text-decoration: underline; }
+        @media (max-width: 700px) {
+    .contact {
+        margin-top: 3vw; /* Reduce from 8vw */
+    }
+
+    .tracklist {
+        width: 100%; /* Expand from 50% */
+        grid-template-columns: repeat(4, 1fr); /* Adjust columns for smaller screens */
+        gap: 1vw 0.5vw;
+    }
+
+    body {
+        padding: 6vw; /* Increase padding for readability */
+    }
+
+    h1 {
+        font-size: 5vw;
+    }
+
+    .section-toggle,
+    .track-item,
+    .bio-content,
+    .time-display,
+    .play-btn,
+    .video-title,
+    .video-controls {
+        font-size: 4vw; /* Adjust font sizes */
+    }
+}
     </style>
 </head>
 <body>
