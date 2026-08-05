@@ -206,34 +206,27 @@
             top: 4vw;
             right: 4vw;
             z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 0.8vw;
+            width: 3.6vw;
+            height: 1.8vw;
             border: 2px solid var(--text-color);
             background: var(--bg-color);
-            color: var(--text-color);
             border-radius: 0;
-            padding: 0.6vw 0.8vw;
-            font: inherit;
-            font-size: 1vw;
-            font-weight: bold;
-            line-height: 1;
-            text-transform: uppercase;
+            padding: 0;
             cursor: pointer;
         }
 
         .theme-switch::after {
             content: '';
-            width: 1.8vw;
-            height: 1vw;
+            width: 50%;
+            height: 100%;
             background: var(--text-color);
             display: block;
-            transform: translateX(-0.4vw);
+            transform: translateX(0);
             transition: transform 0.2s ease;
         }
 
         body.dark-mode .theme-switch::after {
-            transform: translateX(0.4vw);
+            transform: translateX(100%);
         }
 
         a { color: var(--text-color); text-decoration: none; }
@@ -242,7 +235,7 @@
 </head>
 <body>
 
-    <button id="theme-switch" class="theme-switch" type="button" aria-pressed="false">Dark</button>
+    <button id="theme-switch" class="theme-switch" type="button" aria-label="Toggle dark mode" aria-pressed="false"></button>
 
     <h1 id="name-header">JEROME PO<span class="kern-fix">T</span>TER</h1>
 
@@ -362,7 +355,6 @@
         function setDarkMode(isDark) {
             document.body.classList.toggle('dark-mode', isDark);
             themeSwitch.setAttribute('aria-pressed', isDark.toString());
-            themeSwitch.textContent = isDark ? 'Light' : 'Dark';
             localStorage.setItem('darkMode', isDark ? 'true' : 'false');
             if (ctx && !isVisualizerRunning) {
                 drawFlatLine();
