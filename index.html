@@ -270,7 +270,7 @@
                 <div class="video-controls">
                     <div class="play-btn vid-play-btn">PLAY</div>
                     <div class="time-display vid-time-display">0:00</div>
-                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
                 </div>
             </div>
 
@@ -283,7 +283,7 @@
                 <div class="video-controls">
                     <div class="play-btn vid-play-btn">PLAY</div>
                     <div class="time-display vid-time-display">0:00</div>
-                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
                 </div>
             </div>
 
@@ -296,7 +296,7 @@
                 <div class="video-controls">
                     <div class="play-btn vid-play-btn">PLAY</div>
                     <div class="time-display vid-time-display">0:00</div>
-                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
                 </div>
             </div>
 
@@ -309,7 +309,7 @@
                 <div class="video-controls">
                     <div class="play-btn vid-play-btn">PLAY</div>
                     <div class="time-display vid-time-display">0:00</div>
-                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
                 </div>
             </div>
 
@@ -347,7 +347,7 @@
         <div class="custom-player">
             <div id="play-btn" class="play-btn">PLAY</div>
             <div id="time-display" class="time-display">0:00</div>
-            <input type="range" id="seek-bar" class="seek-bar" value="0" step="0.1" min="0">
+            <input type="range" id="seek-bar" class="seek-bar" value="0" step="0.01" min="0">
         </div>
     </div>
 
@@ -421,10 +421,41 @@
         audioPlayer.addEventListener('play', () => { playBtn.textContent = 'PAUSE'; });
         audioPlayer.addEventListener('pause', () => { playBtn.textContent = 'PLAY'; });
 
-        audioPlayer.addEventListener('timeupdate', () => {
-            seekBar.value = audioPlayer.currentTime;
-            timeDisplay.textContent = formatTime(audioPlayer.currentTime);
-        });
+        function updateMediaProgress(media, bar, display) {
+            bar.value = media.currentTime;
+            display.textContent = formatTime(media.currentTime);
+        }
+
+        function setupSmoothProgress(media, bar, display) {
+            let animationFrameId = null;
+
+            function renderProgress() {
+                updateMediaProgress(media, bar, display);
+            }
+
+            function tick() {
+                renderProgress();
+
+                if (!media.paused && !media.ended) {
+                    animationFrameId = requestAnimationFrame(tick);
+                } else {
+                    animationFrameId = null;
+                }
+            }
+
+            media.addEventListener('play', () => {
+                if (animationFrameId === null) {
+                    animationFrameId = requestAnimationFrame(tick);
+                }
+            });
+
+            media.addEventListener('pause', renderProgress);
+            media.addEventListener('ended', renderProgress);
+            media.addEventListener('seeking', renderProgress);
+            media.addEventListener('timeupdate', renderProgress);
+        }
+
+        setupSmoothProgress(audioPlayer, seekBar, timeDisplay);
 
         audioPlayer.addEventListener('loadedmetadata', () => {
             seekBar.max = audioPlayer.duration;
@@ -513,10 +544,7 @@
             vidPlayer.addEventListener('pause', () => { vidPlayBtn.textContent = 'PLAY'; });
 
             // Time and Seek Bar tracking
-            vidPlayer.addEventListener('timeupdate', () => {
-                vidSeekBar.value = vidPlayer.currentTime;
-                vidTimeDisplay.textContent = formatTime(vidPlayer.currentTime);
-            });
+            setupSmoothProgress(vidPlayer, vidSeekBar, vidTimeDisplay);
 
             vidPlayer.addEventListener('loadedmetadata', () => {
                 vidSeekBar.max = vidPlayer.duration;
