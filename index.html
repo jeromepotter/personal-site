@@ -39,17 +39,25 @@
             margin-right: 0.2vw;
         }
 
-        .bio-section {
+        .bio-section,
+        .video-section {
             margin-bottom: 5vw;
         }
-        .bio-toggle {
+
+        .section-heading {
+            font-size: 2vw;
+            font-weight: bold;
+            margin: 0 0 1.5vw 0;
+        }
+
+        .section-toggle {
             font-size: 2vw;
             cursor: pointer;
             font-weight: bold;
             transition: opacity 0.2s ease;
             user-select: none;
         }
-        .bio-toggle:hover {
+        .section-toggle:hover {
             opacity: 0.4;
         }
         .bio-content {
@@ -86,14 +94,6 @@
             margin-top: 6vw; 
         }
         
-        canvas {
-            display: block;
-            width: 100%;
-            height: 30vh;
-            background-color: transparent; 
-            margin-bottom: 2vw;
-        }
-
         /* CUSTOM AUDIO PLAYER UI STYLING */
         .custom-player {
             display: flex;
@@ -161,10 +161,10 @@
 
         /* NEW VIDEO GRID STYLING */
         .video-grid {
-            display: grid;
+            display: none;
             grid-template-columns: repeat(2, 1fr);
             gap: 4vw;
-            margin-top: 8vw;
+            margin-top: 1.5vw;
             width: 100%;
         }
 
@@ -240,11 +240,13 @@
     <h1 id="name-header">JEROME PO<span class="kern-fix">T</span>TER</h1>
 
     <div class="bio-section">
-        <span id="bio-toggle" class="bio-toggle">[+] BIO</span>
+        <span id="bio-toggle" class="section-toggle">[+] BIO</span>
         <div id="bio-content" class="bio-content">
             <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo DJDS, he spent 15 years recording, touring globally, and producing for artists including Kanye West, Khalid, and Burna Boy. Today, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
         </div>
     </div>
+
+    <h2 class="section-heading">AUDIO EXAMPLES</h2>
 
     <ul class="tracklist">
         <li class="track-item" data-src="audio/simplepiano.mp3">
@@ -266,8 +268,6 @@
     </ul>
 
     <div class="media-container">
-        <canvas id="visualizer"></canvas>
-        
         <audio id="main-player">
             <source src="audio/simplepiano.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
@@ -280,12 +280,15 @@
         </div>
     </div>
 
-    <!-- 2x2 VIDEO GRID -->
-    <div class="video-grid">
+    <div class="video-section">
+        <span id="video-toggle" class="section-toggle">[+] VIDEO EXAMPLES</span>
+
+        <!-- 2x2 VIDEO GRID -->
+        <div id="video-content" class="video-grid">
         
         <!-- VIDEO 1 -->
         <div class="video-item">
-            <div class="video-title">GOLF DIRECTED BY NICK WALKER</div>
+            <div class="video-title">GOLF DIRECTED BY <a href="https://www.instagram.com/p/DaOfLfpTf_b/" target="_blank" rel="noopener noreferrer">NICK WALKER</a></div>
             <video class="portfolio-video" playsinline preload="metadata">
                 <source src="video/golf.mp4#t=0.001" type="video/mp4">
             </video>
@@ -298,7 +301,7 @@
 
         <!-- VIDEO 2 -->
         <div class="video-item">
-            <div class="video-title">WORK FOR JORDAN</div>
+            <div class="video-title">WORK FOR <a href="https://www.instagram.com/p/DGMhjjcpWrQ/" target="_blank" rel="noopener noreferrer">JORDAN</a></div>
             <video class="portfolio-video" playsinline preload="metadata">
                 <source src="video/jordan.mp4#t=0.001" type="video/mp4">
             </video>
@@ -335,6 +338,7 @@
             </div>
         </div>
 
+        </div>
     </div>
 
     <div class="contact">
@@ -344,21 +348,11 @@
   <script>
         // 0. Dark Mode Toggle
         const themeSwitch = document.getElementById('theme-switch');
-        let isVisualizerRunning = false;
-        let canvas;
-        let ctx;
-
-        function getThemeColor() {
-            return getComputedStyle(document.body).getPropertyValue('--text-color').trim();
-        }
 
         function setDarkMode(isDark) {
             document.body.classList.toggle('dark-mode', isDark);
             themeSwitch.setAttribute('aria-pressed', isDark.toString());
             localStorage.setItem('darkMode', isDark ? 'true' : 'false');
-            if (ctx && !isVisualizerRunning) {
-                drawFlatLine();
-            }
         }
 
         setDarkMode(localStorage.getItem('darkMode') === 'true');
@@ -367,49 +361,26 @@
             setDarkMode(!document.body.classList.contains('dark-mode'));
         });
 
-        // 1. Bio Toggle Logic
+        // 1. Expandable Section Toggle Logic
         const bioToggle = document.getElementById('bio-toggle');
         const bioContent = document.getElementById('bio-content');
+        const videoToggle = document.getElementById('video-toggle');
+        const videoContent = document.getElementById('video-content');
 
-        bioToggle.addEventListener('click', () => {
-            if (bioContent.style.display === 'block') {
-                bioContent.style.display = 'none';
-                bioToggle.textContent = '[+] BIO';
-            } else {
-                bioContent.style.display = 'block';
-                bioToggle.textContent = '[-] BIO';
-            }
-        });
-
-        // 2. Canvas & Visualizer Setup
-        canvas = document.getElementById('visualizer');
-        ctx = canvas.getContext('2d');
-
-        function drawFlatLine() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.lineWidth = 4;
-            ctx.strokeStyle = getThemeColor();
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height / 2);
-            ctx.lineTo(canvas.width, canvas.height / 2);
-            ctx.stroke();
+        function setupToggle(toggle, content, label, displayValue = 'block') {
+            toggle.addEventListener('click', () => {
+                if (content.style.display === displayValue) {
+                    content.style.display = 'none';
+                    toggle.textContent = `[+] ${label}`;
+                } else {
+                    content.style.display = displayValue;
+                    toggle.textContent = `[-] ${label}`;
+                }
+            });
         }
 
-        function resizeCanvas() {
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
-            if (!isVisualizerRunning) {
-                drawFlatLine();
-            }
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        let audioCtx;
-        let analyser;
-        let dataArray;
-        let bufferLength;
+        setupToggle(bioToggle, bioContent, 'BIO');
+        setupToggle(videoToggle, videoContent, 'VIDEO EXAMPLES', 'grid');
 
         // 3. Audio & Custom Player Logic
         const audioPlayer = document.getElementById('main-player');
@@ -429,7 +400,6 @@
             if (audioPlayer.paused) {
                 // Pause all videos before playing audio
                 document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
-                initWebAudio();
                 audioPlayer.play();
             } else {
                 audioPlayer.pause();
@@ -452,31 +422,6 @@
             audioPlayer.currentTime = seekBar.value;
         });
         
-        function initWebAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 2048;
-                
-                const source = audioCtx.createMediaElementSource(audioPlayer);
-                source.connect(analyser);
-                analyser.connect(audioCtx.destination);
-                
-                bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-            }
-            
-            // Safety net: Force the audio context to resume if the browser suspended it
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            
-            if (!isVisualizerRunning) {
-                isVisualizerRunning = true;
-                drawVisualizer();
-            }
-        }
-
         tracks.forEach(track => {
             track.addEventListener('click', function() {
                 tracks.forEach(t => t.classList.remove('active'));
@@ -491,40 +436,11 @@
                 // Pause all videos before playing a new track
                 document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
                 
-                initWebAudio();
-                
                 audioPlayer.play().catch(err => {
                     console.log("Audio playback was blocked or failed:", err);
                 });
             });
         });
-
-        function drawVisualizer() {
-            requestAnimationFrame(drawVisualizer);
-            analyser.getByteTimeDomainData(dataArray);
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            ctx.lineWidth = 4;
-            ctx.strokeStyle = getThemeColor();
-            ctx.beginPath();
-
-            const sliceWidth = canvas.width / bufferLength;
-            let x = 0;
-
-            for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0; 
-                const y = v * (canvas.height / 2);
-
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-                x += sliceWidth;
-            }
-            ctx.stroke();
-        }
 
         // 4. Custom Grid Video Logic (Handles Multiple Videos)
         const videoItems = document.querySelectorAll('.video-item');
