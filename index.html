@@ -249,18 +249,24 @@
         a { color: var(--text-color); text-decoration: none; }
         a:hover { text-decoration: underline; }
         @media (max-width: 700px) {
+    body {
+        padding: 4vw 4vw 1vw 4vw; /* Reduce bottom padding */
+    }
+
     .contact {
-        margin-top: 3vw; /* Reduce from 8vw */
+        margin-top: 1.5vw; /* Aggressive reduction from 8vw */
+        margin-bottom: 2vw; /* Add bottom margin for breathing room */
     }
 
     .tracklist {
-        width: 100%; /* Expand from 50% */
-        grid-template-columns: repeat(4, 1fr); /* Adjust columns for smaller screens */
+        width: 100%;
+        grid-template-columns: repeat(4, 1fr);
         gap: 1vw 0.5vw;
+        margin-bottom: 1vw;
     }
 
-    body {
-        padding: 6vw; /* Increase padding for readability */
+    .media-container {
+        margin-bottom: 1.5vw;
     }
 
     h1 {
@@ -269,12 +275,8 @@
 
     .section-toggle,
     .track-item,
-    .bio-content,
-    .time-display,
-    .play-btn,
-    .video-title,
-    .video-controls {
-        font-size: 4vw; /* Adjust font sizes */
+    .play-btn {
+        font-size: 4vw;
     }
 }
     </style>
