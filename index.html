@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JEROME POTTER | COMPOSER</title>
+    <title>JEROME POTTER</title>
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -41,7 +41,7 @@
         }
 
         .top-sections {
-            margin-bottom: 5vw;
+            margin-bottom: 1.5vw;
         }
 
         .bio-section {
@@ -77,13 +77,14 @@
             text-transform: none;
         }
 
-        .tracklist {
+     .tracklist {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1vw 2vw;
+            grid-template-columns: repeat(20, 1fr);
+            gap: 1vw;
             list-style: none;
             padding: 0;
             margin: 0 0 4vw 0;
+            text-align: center;
         }
 
         .track-item {
@@ -187,7 +188,7 @@
             font-weight: bold;
         }
 
-     .portfolio-video {
+        .portfolio-video {
             width: 100%;
             aspect-ratio: 16 / 9; /* Forces a uniform horizontal container */
             object-fit: contain; /* Shrinks the video to fit without stretching */
@@ -319,12 +320,32 @@
     <h2 class="section-heading">AUDIO EXAMPLES</h2>
 
     <ul class="tracklist">
-        <li class="track-item" data-src="audio/simplepiano.mp3">01</li>
+        <li class="track-item" data-src="audio/PianoCelloSticks.mp3">01</li>
+        <li class="track-item" data-src="audio/KineTop.mp3">02</li>
+        <li class="track-item" data-src="audio/FlutePiano.mp3">03</li>
+        <li class="track-item" data-src="audio/ClarinetCelloVoice2.mp3">04</li>
+        <li class="track-item" data-src="audio/Mother.mp3">05</li>
+        <li class="track-item" data-src="audio/SilverCloud.mp3">06</li>
+        <li class="track-item" data-src="audio/911.mp3">07</li>
+        <li class="track-item" data-src="audio/Horizon.mp3">08</li>
+        <li class="track-item" data-src="audio/MorningPiano.mp3">09</li>
+        <li class="track-item" data-src="audio/SleepyPiano.mp3">10</li>
+        <li class="track-item" data-src="audio/ClarinetCelloVoice.mp3">11</li>
+        <li class="track-item" data-src="audio/airfield.mp3">12</li>
+        <li class="track-item" data-src="audio/QuailDrill.mp3">13</li>
+        <li class="track-item" data-src="audio/Quarry.mp3">14</li>
+        <li class="track-item" data-src="audio/EmptyNight.mp3">15</li>
+        <li class="track-item" data-src="audio/NeonChild.mp3">16</li>
+        <li class="track-item" data-src="audio/Fits.mp3">17</li>
+        <li class="track-item" data-src="audio/Float.mp3">18</li>
+        <li class="track-item" data-src="audio/Apology.mp3">19</li>
+        <li class="track-item" data-src="audio/LongJourney.mp3">20</li>
     </ul>
 
     <div class="media-container">
         <audio id="main-player">
-            <source src="audio/simplepiano.mp3" type="audio/mpeg">
+            <!-- Loading the first track by default so the player connects right away -->
+            <source src="audio/Float.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
 
