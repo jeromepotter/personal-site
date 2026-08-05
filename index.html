@@ -78,17 +78,16 @@
         }
 
         .tracklist {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1vw 2vw;
             list-style: none;
             padding: 0;
             margin: 0 0 4vw 0;
         }
 
         .track-item {
-            font-size: 3.15vw;
-            margin-bottom: 1.5vw;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            font-size: 1.8vw;
             cursor: pointer;
             transition: opacity 0.2s ease;
         }
@@ -320,22 +319,7 @@
     <h2 class="section-heading">AUDIO EXAMPLES</h2>
 
     <ul class="tracklist">
-        <li class="track-item" data-src="audio/simplepiano.mp3">
-            <span>01. REEL HIGHLIGHTS</span>
-            <span>02:30</span>
-        </li>
-        <li class="track-item" data-src="audio/instagram-score.mp3">
-            <span>02. REEL HIGHLIGHTS PART 2</span>
-            <span>01:15</span>
-        </li>
-        <li class="track-item" data-src="audio/tampax-cue.mp3">
-            <span>03. EXCERPT FROM KATIE</span>
-            <span>01:00</span>
-        </li>
-        <li class="track-item" data-src="audio/applebees-jingle.mp3">
-            <span>04. EXCERPT FROM WORK WITH JORDAN</span>
-            <span>00:30</span>
-        </li>
+        <li class="track-item" data-src="audio/simplepiano.mp3">01</li>
     </ul>
 
     <div class="media-container">
