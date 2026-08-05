@@ -39,9 +39,16 @@
             margin-right: 0.2vw;
         }
 
+        .top-sections {
+            display: flex;
+            align-items: flex-start;
+            gap: 4vw;
+            margin-bottom: 5vw;
+        }
+
         .bio-section,
         .video-section {
-            margin-bottom: 5vw;
+            flex: 1;
         }
 
         .section-heading {
@@ -64,7 +71,7 @@
             display: none;
             font-size: 1.8vw;
             line-height: 1.4;
-            max-width: 75%;
+            max-width: 100%;
             margin-top: 1.5vw;
             text-transform: none; 
         }
@@ -74,7 +81,7 @@
             padding: 0;
             margin: 0 0 4vw 0;
         }
-        
+
         .track-item {
             font-size: 3.5vw;
             margin-bottom: 1.5vw;
@@ -84,7 +91,7 @@
             cursor: pointer;
             transition: opacity 0.2s ease;
         }
-        
+
         .track-item:hover, .track-item.active {
             opacity: 0.4;
         }
@@ -93,7 +100,7 @@
             width: 100%; 
             margin-top: 6vw; 
         }
-        
+
         /* CUSTOM AUDIO PLAYER UI STYLING */
         .custom-player {
             display: flex;
@@ -173,7 +180,7 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .video-title {
             font-size: 2vw;
             margin-bottom: 1.5vw;
@@ -239,10 +246,73 @@
 
     <h1 id="name-header">JEROME PO<span class="kern-fix">T</span>TER</h1>
 
-    <div class="bio-section">
-        <span id="bio-toggle" class="section-toggle">[+] BIO</span>
-        <div id="bio-content" class="bio-content">
-            <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo DJDS, he spent 15 years recording, touring globally, and producing for artists including Kanye West, Khalid, and Burna Boy. Today, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
+    <div class="top-sections">
+        <div class="bio-section">
+            <span id="bio-toggle" class="section-toggle">[+] BIO</span>
+            <div id="bio-content" class="bio-content">
+                <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo DJDS, he spent 15 years recording, touring globally, and producing for artists including Kanye West, Khalid, and Burna Boy. Today, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
+            </div>
+        </div>
+
+        <div class="video-section">
+            <span id="video-toggle" class="section-toggle">[+] VIDEO EXAMPLES</span>
+
+            <!-- 2x2 VIDEO GRID -->
+            <div id="video-content" class="video-grid">
+
+            <!-- VIDEO 1 -->
+            <div class="video-item">
+                <div class="video-title">GOLF DIRECTED BY <a href="https://www.instagram.com/p/DaOfLfpTf_b/" target="_blank" rel="noopener noreferrer">NICK WALKER</a></div>
+                <video class="portfolio-video" playsinline preload="metadata">
+                    <source src="video/golf.mp4#t=0.001" type="video/mp4">
+                </video>
+                <div class="video-controls">
+                    <div class="play-btn vid-play-btn">PLAY</div>
+                    <div class="time-display vid-time-display">0:00</div>
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
+            <!-- VIDEO 2 -->
+            <div class="video-item">
+                <div class="video-title">WORK FOR <a href="https://www.instagram.com/p/DGMhjjcpWrQ/" target="_blank" rel="noopener noreferrer">JORDAN</a></div>
+                <video class="portfolio-video" playsinline preload="metadata">
+                    <source src="video/jordan.mp4#t=0.001" type="video/mp4">
+                </video>
+                <div class="video-controls">
+                    <div class="play-btn vid-play-btn">PLAY</div>
+                    <div class="time-display vid-time-display">0:00</div>
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
+            <!-- VIDEO 3 -->
+            <div class="video-item">
+                <div class="video-title">NIKE CAMPAIGN</div>
+                <video class="portfolio-video" playsinline preload="metadata">
+                    <source src="video/nike.mp4#t=0.001" type="video/mp4">
+                </video>
+                <div class="video-controls">
+                    <div class="play-btn vid-play-btn">PLAY</div>
+                    <div class="time-display vid-time-display">0:00</div>
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
+            <!-- VIDEO 4 -->
+            <div class="video-item">
+                <div class="video-title">DOC EXCERPT 02</div>
+                <video class="portfolio-video" playsinline preload="metadata">
+                    <source src="video/doc2.mp4#t=0.001" type="video/mp4">
+                </video>
+                <div class="video-controls">
+                    <div class="play-btn vid-play-btn">PLAY</div>
+                    <div class="time-display vid-time-display">0:00</div>
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
+            </div>
         </div>
     </div>
 
@@ -280,66 +350,7 @@
         </div>
     </div>
 
-    <div class="video-section">
-        <span id="video-toggle" class="section-toggle">[+] VIDEO EXAMPLES</span>
 
-        <!-- 2x2 VIDEO GRID -->
-        <div id="video-content" class="video-grid">
-        
-        <!-- VIDEO 1 -->
-        <div class="video-item">
-            <div class="video-title">GOLF DIRECTED BY <a href="https://www.instagram.com/p/DaOfLfpTf_b/" target="_blank" rel="noopener noreferrer">NICK WALKER</a></div>
-            <video class="portfolio-video" playsinline preload="metadata">
-                <source src="video/golf.mp4#t=0.001" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <div class="play-btn vid-play-btn">PLAY</div>
-                <div class="time-display vid-time-display">0:00</div>
-                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
-            </div>
-        </div>
-
-        <!-- VIDEO 2 -->
-        <div class="video-item">
-            <div class="video-title">WORK FOR <a href="https://www.instagram.com/p/DGMhjjcpWrQ/" target="_blank" rel="noopener noreferrer">JORDAN</a></div>
-            <video class="portfolio-video" playsinline preload="metadata">
-                <source src="video/jordan.mp4#t=0.001" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <div class="play-btn vid-play-btn">PLAY</div>
-                <div class="time-display vid-time-display">0:00</div>
-                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
-            </div>
-        </div>
-
-        <!-- VIDEO 3 -->
-        <div class="video-item">
-            <div class="video-title">NIKE CAMPAIGN</div>
-            <video class="portfolio-video" playsinline preload="metadata">
-                <source src="video/nike.mp4#t=0.001" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <div class="play-btn vid-play-btn">PLAY</div>
-                <div class="time-display vid-time-display">0:00</div>
-                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
-            </div>
-        </div>
-
-        <!-- VIDEO 4 -->
-        <div class="video-item">
-            <div class="video-title">DOC EXCERPT 02</div>
-            <video class="portfolio-video" playsinline preload="metadata">
-                <source src="video/doc2.mp4#t=0.001" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <div class="play-btn vid-play-btn">PLAY</div>
-                <div class="time-display vid-time-display">0:00</div>
-                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
-            </div>
-        </div>
-
-        </div>
-    </div>
 
     <div class="contact">
         <a href="mailto:jerome.potter@gmail.com">CONTACT</a>
@@ -421,21 +432,21 @@
         seekBar.addEventListener('input', () => {
             audioPlayer.currentTime = seekBar.value;
         });
-        
+
         tracks.forEach(track => {
             track.addEventListener('click', function() {
                 tracks.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
-                
+
                 const newSrc = this.getAttribute('data-src');
                 audioPlayer.src = newSrc;
-                
+
                 // Safety net: Force the browser to load the new source data
                 audioPlayer.load(); 
-                
+
                 // Pause all videos before playing a new track
                 document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
-                
+
                 audioPlayer.play().catch(err => {
                     console.log("Audio playback was blocked or failed:", err);
                 });
@@ -477,7 +488,7 @@
                     if (!audioPlayer.paused) {
                         audioPlayer.pause();
                     }
-                    
+
                     // 2. Pause any other videos that might be playing
                     document.querySelectorAll('.portfolio-video').forEach(v => {
                         if (v !== vidPlayer && !v.paused) {
