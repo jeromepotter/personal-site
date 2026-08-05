@@ -30,7 +30,7 @@
         }
 
         h1 {
-            font-size: 5.4vw;
+            font-size: 3.4vw;
             margin: 0 0 1vw 0;
             font-weight: 700;
             letter-spacing: 0;
@@ -381,7 +381,8 @@
             localStorage.setItem('darkMode', isDark ? 'true' : 'false');
         }
 
-        setDarkMode(localStorage.getItem('darkMode') === 'true');
+        // Set to Dark Mode by default. If it specifically evaluates to 'false', it overrides.
+        setDarkMode(localStorage.getItem('darkMode') !== 'false');
 
         themeSwitch.addEventListener('click', () => {
             setDarkMode(!document.body.classList.contains('dark-mode'));
@@ -437,7 +438,6 @@
             analyser.connect(audioCtx.destination);
             
             isAudioInitialized = true;
-            drawOscilloscope();
         }
 
         // Draw the waveform frame by frame
@@ -448,10 +448,6 @@
             canvas.width = canvas.clientWidth * window.devicePixelRatio;
             canvas.height = canvas.clientHeight * window.devicePixelRatio;
 
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-            analyser.getByteTimeDomainData(dataArray);
-
             // Pull the dynamic color from CSS variables to handle dark mode swaps
             const computedStyle = getComputedStyle(document.body);
             const textColor = computedStyle.getPropertyValue('--text-color').trim();
@@ -461,23 +457,38 @@
             canvasCtx.strokeStyle = textColor;
             canvasCtx.beginPath();
 
-            const sliceWidth = canvas.width * 1.0 / bufferLength;
-            let x = 0;
+            if (analyser) {
+                // If audio is initialized, draw the dynamic waveform
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteTimeDomainData(dataArray);
 
-            for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0;
-                const y = v * canvas.height / 2;
+                const sliceWidth = canvas.width * 1.0 / bufferLength;
+                let x = 0;
 
-                if (i === 0) {
-                    canvasCtx.moveTo(x, y);
-                } else {
-                    canvasCtx.lineTo(x, y);
+                for (let i = 0; i < bufferLength; i++) {
+                    const v = dataArray[i] / 128.0;
+                    const y = v * canvas.height / 2;
+
+                    if (i === 0) {
+                        canvasCtx.moveTo(x, y);
+                    } else {
+                        canvasCtx.lineTo(x, y);
+                    }
+                    x += sliceWidth;
                 }
-                x += sliceWidth;
+            } else {
+                // Draw a static flat line before playback starts
+                canvasCtx.moveTo(0, canvas.height / 2);
+                canvasCtx.lineTo(canvas.width, canvas.height / 2);
             }
+
             canvasCtx.lineTo(canvas.width, canvas.height / 2);
             canvasCtx.stroke();
         }
+        
+        // Start the drawing loop immediately so the line shows on page load
+        drawOscilloscope();
 
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
