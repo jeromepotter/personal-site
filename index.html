@@ -25,40 +25,56 @@
             color: var(--text-color);
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             text-transform: uppercase;
+            font-size: 90%;
             line-height: 1.1;
         }
 
         h1 {
-            font-size: 6vw; 
+            font-size: 5.4vw;
             margin: 0 0 1vw 0;
             font-weight: 700;
-            letter-spacing: 0; 
+            letter-spacing: 0;
         }
 
         .kern-fix {
             margin-right: 0.2vw;
         }
 
-        .bio-section {
+        .top-sections {
             margin-bottom: 5vw;
         }
-        .bio-toggle {
-            font-size: 2vw;
+
+        .bio-section {
+            margin-bottom: 1.5vw;
+        }
+
+        .video-section {
+            width: 100%;
+        }
+
+        .section-heading {
+            font-size: 1.8vw;
+            font-weight: bold;
+            margin: 0 0 1.5vw 0;
+        }
+
+        .section-toggle {
+            font-size: 1.8vw;
             cursor: pointer;
             font-weight: bold;
             transition: opacity 0.2s ease;
             user-select: none;
         }
-        .bio-toggle:hover {
+        .section-toggle:hover {
             opacity: 0.4;
         }
         .bio-content {
             display: none;
-            font-size: 1.8vw;
+            font-size: 1.62vw;
             line-height: 1.4;
-            max-width: 75%;
+            max-width: 100%;
             margin-top: 1.5vw;
-            text-transform: none; 
+            text-transform: none;
         }
 
         .tracklist {
@@ -66,9 +82,9 @@
             padding: 0;
             margin: 0 0 4vw 0;
         }
-        
+
         .track-item {
-            font-size: 3.5vw;
+            font-size: 3.15vw;
             margin-bottom: 1.5vw;
             display: flex;
             justify-content: space-between;
@@ -76,22 +92,14 @@
             cursor: pointer;
             transition: opacity 0.2s ease;
         }
-        
+
         .track-item:hover, .track-item.active {
             opacity: 0.4;
         }
 
-        .media-container { 
-            width: 100%; 
-            margin-top: 6vw; 
-        }
-        
-        canvas {
-            display: block;
+        .media-container {
             width: 100%;
-            height: 30vh;
-            background-color: transparent; 
-            margin-bottom: 2vw;
+            margin-top: 6vw;
         }
 
         /* CUSTOM AUDIO PLAYER UI STYLING */
@@ -99,14 +107,14 @@
             display: flex;
             align-items: center;
             gap: 2vw;
-            font-size: 2vw;
+            font-size: 1.8vw;
             font-weight: bold;
             width: 100%;
         }
 
         .play-btn {
             cursor: pointer;
-            width: 8vw; 
+            width: 8vw;
             user-select: none;
         }
 
@@ -115,7 +123,7 @@
         }
 
         .time-display {
-            font-size: 1.5vw;
+            font-size: 1.35vw;
             min-width: 6vw;
         }
 
@@ -146,14 +154,14 @@
 
         .seek-bar::-webkit-slider-thumb {
             -webkit-appearance: none;
-            height: 2vw;
-            width: 0.5vw;
+            height: 1.8vw;
+            width: 0.45vw;
             background: var(--text-color);
-            margin-top: calc(-1vw + 1px); 
+            margin-top: calc(-0.9vw + 1px);
         }
         .seek-bar::-moz-range-thumb {
-            height: 2vw;
-            width: 0.5vw;
+            height: 1.8vw;
+            width: 0.45vw;
             background: var(--text-color);
             border: none;
             border-radius: 0;
@@ -161,10 +169,10 @@
 
         /* NEW VIDEO GRID STYLING */
         .video-grid {
-            display: grid;
+            display: none;
             grid-template-columns: repeat(2, 1fr);
             gap: 4vw;
-            margin-top: 8vw;
+            margin-top: 1.5vw;
             width: 100%;
         }
 
@@ -173,9 +181,9 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .video-title {
-            font-size: 2vw;
+            font-size: 1.8vw;
             margin-bottom: 1.5vw;
             font-weight: bold;
         }
@@ -194,12 +202,12 @@
             display: flex;
             align-items: center;
             gap: 2vw;
-            font-size: 2vw;
+            font-size: 1.8vw;
             font-weight: bold;
             width: 100%;
         }
 
-        .contact { margin-top: 8vw; font-size: 2vw; font-weight: bold; }
+        .contact { margin-top: 8vw; font-size: 1.8vw; font-weight: bold; }
 
         .theme-switch {
             position: fixed;
@@ -239,12 +247,77 @@
 
     <h1 id="name-header">JEROME PO<span class="kern-fix">T</span>TER</h1>
 
-    <div class="bio-section">
-        <span id="bio-toggle" class="bio-toggle">[+] BIO</span>
-        <div id="bio-content" class="bio-content">
-            <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo DJDS, he spent 15 years recording, touring globally, and producing for artists including Kanye West, Khalid, and Burna Boy. Today, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
+    <div class="top-sections">
+        <div class="bio-section">
+            <span id="bio-toggle" class="section-toggle">[+] BIO</span>
+            <div id="bio-content" class="bio-content">
+                <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo DJDS, he spent 15 years recording, touring globally, and producing for artists including Kanye West, Khalid, and Burna Boy. Today, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
+            </div>
+        </div>
+
+        <div class="video-section">
+            <span id="video-toggle" class="section-toggle">[+] VIDEO EXAMPLES</span>
+
+            <!-- 2x2 VIDEO GRID -->
+            <div id="video-content" class="video-grid">
+
+            <!-- VIDEO 1 -->
+            <div class="video-item">
+                <div class="video-title">GOLF DIRECTED BY <a href="https://www.instagram.com/p/DaOfLfpTf_b/" target="_blank" rel="noopener noreferrer">NICK WALKER</a></div>
+                <video class="portfolio-video" playsinline preload="metadata">
+                    <source src="video/golf.mp4#t=0.001" type="video/mp4">
+                </video>
+                <div class="video-controls">
+                    <div class="play-btn vid-play-btn">PLAY</div>
+                    <div class="time-display vid-time-display">0:00</div>
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
+            <!-- VIDEO 2 -->
+            <div class="video-item">
+                <div class="video-title">WORK FOR <a href="https://www.instagram.com/p/DGMhjjcpWrQ/" target="_blank" rel="noopener noreferrer">JORDAN</a></div>
+                <video class="portfolio-video" playsinline preload="metadata">
+                    <source src="video/jordan.mp4#t=0.001" type="video/mp4">
+                </video>
+                <div class="video-controls">
+                    <div class="play-btn vid-play-btn">PLAY</div>
+                    <div class="time-display vid-time-display">0:00</div>
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
+            <!-- VIDEO 3 -->
+            <div class="video-item">
+                <div class="video-title">NIKE CAMPAIGN</div>
+                <video class="portfolio-video" playsinline preload="metadata">
+                    <source src="video/nike.mp4#t=0.001" type="video/mp4">
+                </video>
+                <div class="video-controls">
+                    <div class="play-btn vid-play-btn">PLAY</div>
+                    <div class="time-display vid-time-display">0:00</div>
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
+            <!-- VIDEO 4 -->
+            <div class="video-item">
+                <div class="video-title">DOC EXCERPT 02</div>
+                <video class="portfolio-video" playsinline preload="metadata">
+                    <source src="video/doc2.mp4#t=0.001" type="video/mp4">
+                </video>
+                <div class="video-controls">
+                    <div class="play-btn vid-play-btn">PLAY</div>
+                    <div class="time-display vid-time-display">0:00</div>
+                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
+            </div>
         </div>
     </div>
+
+    <h2 class="section-heading">AUDIO EXAMPLES</h2>
 
     <ul class="tracklist">
         <li class="track-item" data-src="audio/simplepiano.mp3">
@@ -266,8 +339,6 @@
     </ul>
 
     <div class="media-container">
-        <canvas id="visualizer"></canvas>
-        
         <audio id="main-player">
             <source src="audio/simplepiano.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
@@ -280,62 +351,7 @@
         </div>
     </div>
 
-    <!-- 2x2 VIDEO GRID -->
-    <div class="video-grid">
-        
-        <!-- VIDEO 1 -->
-        <div class="video-item">
-            <div class="video-title">GOLF DIRECTED BY NICK WALKER</div>
-            <video class="portfolio-video" playsinline preload="metadata">
-                <source src="video/golf.mp4#t=0.001" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <div class="play-btn vid-play-btn">PLAY</div>
-                <div class="time-display vid-time-display">0:00</div>
-                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
-            </div>
-        </div>
 
-        <!-- VIDEO 2 -->
-        <div class="video-item">
-            <div class="video-title">WORK FOR JORDAN</div>
-            <video class="portfolio-video" playsinline preload="metadata">
-                <source src="video/jordan.mp4#t=0.001" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <div class="play-btn vid-play-btn">PLAY</div>
-                <div class="time-display vid-time-display">0:00</div>
-                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
-            </div>
-        </div>
-
-        <!-- VIDEO 3 -->
-        <div class="video-item">
-            <div class="video-title">NIKE CAMPAIGN</div>
-            <video class="portfolio-video" playsinline preload="metadata">
-                <source src="video/nike.mp4#t=0.001" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <div class="play-btn vid-play-btn">PLAY</div>
-                <div class="time-display vid-time-display">0:00</div>
-                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
-            </div>
-        </div>
-
-        <!-- VIDEO 4 -->
-        <div class="video-item">
-            <div class="video-title">DOC EXCERPT 02</div>
-            <video class="portfolio-video" playsinline preload="metadata">
-                <source src="video/doc2.mp4#t=0.001" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <div class="play-btn vid-play-btn">PLAY</div>
-                <div class="time-display vid-time-display">0:00</div>
-                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.1" min="0">
-            </div>
-        </div>
-
-    </div>
 
     <div class="contact">
         <a href="mailto:jerome.potter@gmail.com">CONTACT</a>
@@ -344,21 +360,11 @@
   <script>
         // 0. Dark Mode Toggle
         const themeSwitch = document.getElementById('theme-switch');
-        let isVisualizerRunning = false;
-        let canvas;
-        let ctx;
-
-        function getThemeColor() {
-            return getComputedStyle(document.body).getPropertyValue('--text-color').trim();
-        }
 
         function setDarkMode(isDark) {
             document.body.classList.toggle('dark-mode', isDark);
             themeSwitch.setAttribute('aria-pressed', isDark.toString());
             localStorage.setItem('darkMode', isDark ? 'true' : 'false');
-            if (ctx && !isVisualizerRunning) {
-                drawFlatLine();
-            }
         }
 
         setDarkMode(localStorage.getItem('darkMode') === 'true');
@@ -367,49 +373,26 @@
             setDarkMode(!document.body.classList.contains('dark-mode'));
         });
 
-        // 1. Bio Toggle Logic
+        // 1. Expandable Section Toggle Logic
         const bioToggle = document.getElementById('bio-toggle');
         const bioContent = document.getElementById('bio-content');
+        const videoToggle = document.getElementById('video-toggle');
+        const videoContent = document.getElementById('video-content');
 
-        bioToggle.addEventListener('click', () => {
-            if (bioContent.style.display === 'block') {
-                bioContent.style.display = 'none';
-                bioToggle.textContent = '[+] BIO';
-            } else {
-                bioContent.style.display = 'block';
-                bioToggle.textContent = '[-] BIO';
-            }
-        });
-
-        // 2. Canvas & Visualizer Setup
-        canvas = document.getElementById('visualizer');
-        ctx = canvas.getContext('2d');
-
-        function drawFlatLine() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.lineWidth = 4;
-            ctx.strokeStyle = getThemeColor();
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height / 2);
-            ctx.lineTo(canvas.width, canvas.height / 2);
-            ctx.stroke();
+        function setupToggle(toggle, content, label, displayValue = 'block') {
+            toggle.addEventListener('click', () => {
+                if (content.style.display === displayValue) {
+                    content.style.display = 'none';
+                    toggle.textContent = `[+] ${label}`;
+                } else {
+                    content.style.display = displayValue;
+                    toggle.textContent = `[-] ${label}`;
+                }
+            });
         }
 
-        function resizeCanvas() {
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
-            if (!isVisualizerRunning) {
-                drawFlatLine();
-            }
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        let audioCtx;
-        let analyser;
-        let dataArray;
-        let bufferLength;
+        setupToggle(bioToggle, bioContent, 'BIO');
+        setupToggle(videoToggle, videoContent, 'VIDEO EXAMPLES', 'grid');
 
         // 3. Audio & Custom Player Logic
         const audioPlayer = document.getElementById('main-player');
@@ -429,7 +412,6 @@
             if (audioPlayer.paused) {
                 // Pause all videos before playing audio
                 document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
-                initWebAudio();
                 audioPlayer.play();
             } else {
                 audioPlayer.pause();
@@ -451,80 +433,26 @@
         seekBar.addEventListener('input', () => {
             audioPlayer.currentTime = seekBar.value;
         });
-        
-        function initWebAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 2048;
-                
-                const source = audioCtx.createMediaElementSource(audioPlayer);
-                source.connect(analyser);
-                analyser.connect(audioCtx.destination);
-                
-                bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-            }
-            
-            // Safety net: Force the audio context to resume if the browser suspended it
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            
-            if (!isVisualizerRunning) {
-                isVisualizerRunning = true;
-                drawVisualizer();
-            }
-        }
 
         tracks.forEach(track => {
             track.addEventListener('click', function() {
                 tracks.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
-                
+
                 const newSrc = this.getAttribute('data-src');
                 audioPlayer.src = newSrc;
-                
+
                 // Safety net: Force the browser to load the new source data
-                audioPlayer.load(); 
-                
+                audioPlayer.load();
+
                 // Pause all videos before playing a new track
                 document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
-                
-                initWebAudio();
-                
+
                 audioPlayer.play().catch(err => {
                     console.log("Audio playback was blocked or failed:", err);
                 });
             });
         });
-
-        function drawVisualizer() {
-            requestAnimationFrame(drawVisualizer);
-            analyser.getByteTimeDomainData(dataArray);
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            ctx.lineWidth = 4;
-            ctx.strokeStyle = getThemeColor();
-            ctx.beginPath();
-
-            const sliceWidth = canvas.width / bufferLength;
-            let x = 0;
-
-            for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0; 
-                const y = v * (canvas.height / 2);
-
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-                x += sliceWidth;
-            }
-            ctx.stroke();
-        }
 
         // 4. Custom Grid Video Logic (Handles Multiple Videos)
         const videoItems = document.querySelectorAll('.video-item');
@@ -561,7 +489,7 @@
                     if (!audioPlayer.paused) {
                         audioPlayer.pause();
                     }
-                    
+
                     // 2. Pause any other videos that might be playing
                     document.querySelectorAll('.portfolio-video').forEach(v => {
                         if (v !== vidPlayer && !v.paused) {
