@@ -6,11 +6,23 @@
     <title>JEROME POTTER | COMPOSER</title>
     <style>
         * { box-sizing: border-box; }
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --video-bg: #000000;
+        }
+
+        body.dark-mode {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --video-bg: #111111;
+        }
+
         body {
             margin: 0;
             padding: 4vw;
-            background-color: #ffffff;
-            color: #000000;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             text-transform: uppercase;
             line-height: 1.1;
@@ -124,25 +136,25 @@
         .seek-bar::-webkit-slider-runnable-track {
             width: 100%;
             height: 2px;
-            background: #000000;
+            background: var(--text-color);
         }
         .seek-bar::-moz-range-track {
             width: 100%;
             height: 2px;
-            background: #000000;
+            background: var(--text-color);
         }
 
         .seek-bar::-webkit-slider-thumb {
             -webkit-appearance: none;
             height: 2vw;
             width: 0.5vw;
-            background: #000000;
+            background: var(--text-color);
             margin-top: calc(-1vw + 1px); 
         }
         .seek-bar::-moz-range-thumb {
             height: 2vw;
             width: 0.5vw;
-            background: #000000;
+            background: var(--text-color);
             border: none;
             border-radius: 0;
         }
@@ -172,7 +184,7 @@
             width: 100%;
             aspect-ratio: 16 / 9; /* Forces a uniform horizontal container */
             object-fit: contain; /* Shrinks the video to fit without stretching */
-            background-color: #000000; /* Creates the black bars */
+            background-color: var(--video-bg); /* Creates the black bars */
             display: block;
             margin-bottom: 1.5vw;
             cursor: pointer;
@@ -188,11 +200,49 @@
         }
 
         .contact { margin-top: 8vw; font-size: 2vw; font-weight: bold; }
-        a { color: #000000; text-decoration: none; }
+
+        .theme-switch {
+            position: fixed;
+            top: 4vw;
+            right: 4vw;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            border: 2px solid var(--text-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border-radius: 0;
+            padding: 0.6vw 0.8vw;
+            font: inherit;
+            font-size: 1vw;
+            font-weight: bold;
+            line-height: 1;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .theme-switch::after {
+            content: '';
+            width: 1.8vw;
+            height: 1vw;
+            background: var(--text-color);
+            display: block;
+            transform: translateX(-0.4vw);
+            transition: transform 0.2s ease;
+        }
+
+        body.dark-mode .theme-switch::after {
+            transform: translateX(0.4vw);
+        }
+
+        a { color: var(--text-color); text-decoration: none; }
         a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
+
+    <button id="theme-switch" class="theme-switch" type="button" aria-pressed="false">Dark</button>
 
     <h1 id="name-header">JEROME PO<span class="kern-fix">T</span>TER</h1>
 
@@ -243,8 +293,8 @@
         <!-- VIDEO 1 -->
         <div class="video-item">
             <div class="video-title">GOLF DIRECTED BY NICK WALKER</div>
-            <video class="portfolio-video" playsinline>
-                <source src="video/golf.mp4" type="video/mp4">
+            <video class="portfolio-video" playsinline preload="metadata">
+                <source src="video/golf.mp4#t=0.001" type="video/mp4">
             </video>
             <div class="video-controls">
                 <div class="play-btn vid-play-btn">PLAY</div>
@@ -256,8 +306,8 @@
         <!-- VIDEO 2 -->
         <div class="video-item">
             <div class="video-title">WORK FOR JORDAN</div>
-            <video class="portfolio-video" playsinline>
-                <source src="video/jordan.mp4" type="video/mp4">
+            <video class="portfolio-video" playsinline preload="metadata">
+                <source src="video/jordan.mp4#t=0.001" type="video/mp4">
             </video>
             <div class="video-controls">
                 <div class="play-btn vid-play-btn">PLAY</div>
@@ -269,8 +319,8 @@
         <!-- VIDEO 3 -->
         <div class="video-item">
             <div class="video-title">NIKE CAMPAIGN</div>
-            <video class="portfolio-video" playsinline>
-                <source src="video/nike.mp4" type="video/mp4">
+            <video class="portfolio-video" playsinline preload="metadata">
+                <source src="video/nike.mp4#t=0.001" type="video/mp4">
             </video>
             <div class="video-controls">
                 <div class="play-btn vid-play-btn">PLAY</div>
@@ -282,8 +332,8 @@
         <!-- VIDEO 4 -->
         <div class="video-item">
             <div class="video-title">DOC EXCERPT 02</div>
-            <video class="portfolio-video" playsinline>
-                <source src="video/doc2.mp4" type="video/mp4">
+            <video class="portfolio-video" playsinline preload="metadata">
+                <source src="video/doc2.mp4#t=0.001" type="video/mp4">
             </video>
             <div class="video-controls">
                 <div class="play-btn vid-play-btn">PLAY</div>
@@ -299,6 +349,32 @@
     </div>
 
   <script>
+        // 0. Dark Mode Toggle
+        const themeSwitch = document.getElementById('theme-switch');
+        let isVisualizerRunning = false;
+        let canvas;
+        let ctx;
+
+        function getThemeColor() {
+            return getComputedStyle(document.body).getPropertyValue('--text-color').trim();
+        }
+
+        function setDarkMode(isDark) {
+            document.body.classList.toggle('dark-mode', isDark);
+            themeSwitch.setAttribute('aria-pressed', isDark.toString());
+            themeSwitch.textContent = isDark ? 'Light' : 'Dark';
+            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+            if (ctx && !isVisualizerRunning) {
+                drawFlatLine();
+            }
+        }
+
+        setDarkMode(localStorage.getItem('darkMode') === 'true');
+
+        themeSwitch.addEventListener('click', () => {
+            setDarkMode(!document.body.classList.contains('dark-mode'));
+        });
+
         // 1. Bio Toggle Logic
         const bioToggle = document.getElementById('bio-toggle');
         const bioContent = document.getElementById('bio-content');
@@ -314,14 +390,13 @@
         });
 
         // 2. Canvas & Visualizer Setup
-        const canvas = document.getElementById('visualizer');
-        const ctx = canvas.getContext('2d');
-        let isVisualizerRunning = false;
+        canvas = document.getElementById('visualizer');
+        ctx = canvas.getContext('2d');
 
         function drawFlatLine() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.lineWidth = 4;
-            ctx.strokeStyle = '#000000';
+            ctx.strokeStyle = getThemeColor();
             ctx.beginPath();
             ctx.moveTo(0, canvas.height / 2);
             ctx.lineTo(canvas.width, canvas.height / 2);
@@ -439,7 +514,7 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             ctx.lineWidth = 4;
-            ctx.strokeStyle = '#000000';
+            ctx.strokeStyle = getThemeColor();
             ctx.beginPath();
 
             const sliceWidth = canvas.width / bufferLength;
@@ -462,11 +537,31 @@
         // 4. Custom Grid Video Logic (Handles Multiple Videos)
         const videoItems = document.querySelectorAll('.video-item');
 
+        const mobileVideoQuery = window.matchMedia('(max-width: 700px)');
+
+        function showMobileFirstFrame(video) {
+            if (!mobileVideoQuery.matches || video.dataset.mobileFrameReady === 'true') {
+                return;
+            }
+
+            const setFrame = () => {
+                if (video.readyState >= 1) {
+                    video.currentTime = 0.001;
+                    video.dataset.mobileFrameReady = 'true';
+                }
+            };
+
+            video.addEventListener('loadedmetadata', setFrame, { once: true });
+            video.load();
+        }
+
         videoItems.forEach(item => {
             const vidPlayer = item.querySelector('.portfolio-video');
             const vidPlayBtn = item.querySelector('.vid-play-btn');
             const vidTimeDisplay = item.querySelector('.vid-time-display');
             const vidSeekBar = item.querySelector('.vid-seek-bar');
+
+            showMobileFirstFrame(vidPlayer);
 
             function toggleVideo() {
                 if (vidPlayer.paused) {
