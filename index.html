@@ -77,7 +77,7 @@
             text-transform: none;
         }
 
-     .tracklist {
+        .tracklist {
             display: grid;
             grid-template-columns: repeat(20, 1fr);
             gap: 1vw;
@@ -100,6 +100,14 @@
         .media-container {
             width: 100%;
             margin-top: 6vw;
+        }
+
+        /* OSCILLOSCOPE CANVAS */
+        .oscilloscope-canvas {
+            width: 100%;
+            height: 6vw;
+            margin-bottom: 1vw;
+            display: block;
         }
 
         /* CUSTOM AUDIO PLAYER UI STYLING */
@@ -190,9 +198,9 @@
 
         .portfolio-video {
             width: 100%;
-            aspect-ratio: 16 / 9; /* Forces a uniform horizontal container */
-            object-fit: contain; /* Shrinks the video to fit without stretching */
-            background-color: var(--video-bg); /* Creates the black bars */
+            aspect-ratio: 16 / 9;
+            object-fit: contain;
+            background-color: var(--video-bg);
             display: block;
             margin-bottom: 1.5vw;
             cursor: pointer;
@@ -320,7 +328,7 @@
     <h2 class="section-heading">AUDIO EXAMPLES</h2>
 
     <ul class="tracklist">
-        <li class="track-item" data-src="audio/PianoCelloSticks.mp3">01</li>
+        <li class="track-item" data-src="audio/Float.mp3">01</li>
         <li class="track-item" data-src="audio/KineTop.mp3">02</li>
         <li class="track-item" data-src="audio/FlutePiano.mp3">03</li>
         <li class="track-item" data-src="audio/ClarinetCelloVoice2.mp3">04</li>
@@ -337,17 +345,20 @@
         <li class="track-item" data-src="audio/EmptyNight.mp3">15</li>
         <li class="track-item" data-src="audio/NeonChild.mp3">16</li>
         <li class="track-item" data-src="audio/Fits.mp3">17</li>
-        <li class="track-item" data-src="audio/Float.mp3">18</li>
+        <li class="track-item" data-src="audio/PianoCelloSticks.mp3">18</li>
         <li class="track-item" data-src="audio/Apology.mp3">19</li>
         <li class="track-item" data-src="audio/LongJourney.mp3">20</li>
     </ul>
 
     <div class="media-container">
-        <audio id="main-player">
+        <audio id="main-player" crossorigin="anonymous">
             <!-- Loading the first track by default so the player connects right away -->
             <source src="audio/Float.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
+
+        <!-- Oscilloscope Canvas injected here -->
+        <canvas id="oscilloscope" class="oscilloscope-canvas"></canvas>
 
         <div class="custom-player">
             <div id="play-btn" class="play-btn">PLAY</div>
@@ -355,8 +366,6 @@
             <input type="range" id="seek-bar" class="seek-bar" value="0" step="0.01" min="0">
         </div>
     </div>
-
-
 
     <div class="contact">
         <a href="mailto:jerome.potter@gmail.com">CONTACT</a>
@@ -406,6 +415,70 @@
         const timeDisplay = document.getElementById('time-display');
         const tracks = document.querySelectorAll('.track-item');
 
+        // Web Audio API Variables
+        let audioCtx, analyser, source;
+        let isAudioInitialized = false;
+        const canvas = document.getElementById('oscilloscope');
+        const canvasCtx = canvas.getContext('2d');
+
+        // Initialize the Audio Context and Analyser
+        function initOscilloscope() {
+            if (isAudioInitialized) return;
+            
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            analyser = audioCtx.createAnalyser();
+            
+            // Defines the number of data points. 2048 is standard.
+            analyser.fftSize = 2048; 
+            
+            source = audioCtx.createMediaElementSource(audioPlayer);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+            
+            isAudioInitialized = true;
+            drawOscilloscope();
+        }
+
+        // Draw the waveform frame by frame
+        function drawOscilloscope() {
+            requestAnimationFrame(drawOscilloscope);
+
+            // Responsive high-DPI scaling
+            canvas.width = canvas.clientWidth * window.devicePixelRatio;
+            canvas.height = canvas.clientHeight * window.devicePixelRatio;
+
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteTimeDomainData(dataArray);
+
+            // Pull the dynamic color from CSS variables to handle dark mode swaps
+            const computedStyle = getComputedStyle(document.body);
+            const textColor = computedStyle.getPropertyValue('--text-color').trim();
+
+            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+            canvasCtx.lineWidth = 2 * window.devicePixelRatio;
+            canvasCtx.strokeStyle = textColor;
+            canvasCtx.beginPath();
+
+            const sliceWidth = canvas.width * 1.0 / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = v * canvas.height / 2;
+
+                if (i === 0) {
+                    canvasCtx.moveTo(x, y);
+                } else {
+                    canvasCtx.lineTo(x, y);
+                }
+                x += sliceWidth;
+            }
+            canvasCtx.lineTo(canvas.width, canvas.height / 2);
+            canvasCtx.stroke();
+        }
+
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
             const min = Math.floor(seconds / 60);
@@ -414,8 +487,12 @@
         }
 
         playBtn.addEventListener('click', () => {
+            initOscilloscope();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
             if (audioPlayer.paused) {
-                // Pause all videos before playing audio
                 document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
                 audioPlayer.play();
             } else {
@@ -440,7 +517,6 @@
 
             function tick() {
                 renderProgress();
-
                 if (!media.paused && !media.ended) {
                     animationFrameId = requestAnimationFrame(tick);
                 } else {
@@ -472,16 +548,18 @@
 
         tracks.forEach(track => {
             track.addEventListener('click', function() {
+                initOscilloscope();
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
                 tracks.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
 
                 const newSrc = this.getAttribute('data-src');
                 audioPlayer.src = newSrc;
-
-                // Safety net: Force the browser to load the new source data
                 audioPlayer.load();
 
-                // Pause all videos before playing a new track
                 document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
 
                 audioPlayer.play().catch(err => {
@@ -492,7 +570,6 @@
 
         // 4. Custom Grid Video Logic (Handles Multiple Videos)
         const videoItems = document.querySelectorAll('.video-item');
-
         const mobileVideoQuery = window.matchMedia('(max-width: 700px)');
 
         function showMobileFirstFrame(video) {
@@ -521,34 +598,26 @@
 
             function toggleVideo() {
                 if (vidPlayer.paused) {
-                    // 1. Pause the main audio player if it's running
                     if (!audioPlayer.paused) {
                         audioPlayer.pause();
                     }
-
-                    // 2. Pause any other videos that might be playing
                     document.querySelectorAll('.portfolio-video').forEach(v => {
                         if (v !== vidPlayer && !v.paused) {
                             v.pause();
                         }
                     });
-
-                    // 3. Play this specific video
                     vidPlayer.play();
                 } else {
                     vidPlayer.pause();
                 }
             }
 
-            // Click events
             vidPlayBtn.addEventListener('click', toggleVideo);
             vidPlayer.addEventListener('click', toggleVideo);
 
-            // Update UI on play/pause
             vidPlayer.addEventListener('play', () => { vidPlayBtn.textContent = 'PAUSE'; });
             vidPlayer.addEventListener('pause', () => { vidPlayBtn.textContent = 'PLAY'; });
 
-            // Time and Seek Bar tracking
             setupSmoothProgress(vidPlayer, vidSeekBar, vidTimeDisplay);
 
             vidPlayer.addEventListener('loadedmetadata', () => {
