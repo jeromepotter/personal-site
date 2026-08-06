@@ -530,6 +530,36 @@
             seekBar.max = audioPlayer.duration;
         });
 
+
+        function setupTouchScrubbing(media, bar) {
+    let isTouching = false;
+
+    bar.addEventListener('touchstart', () => {
+        isTouching = true;
+        media.pause();
+    });
+
+    bar.addEventListener('touchmove', (e) => {
+        if (!isTouching) return;
+        
+        const touch = e.touches[0];
+        const rect = bar.getBoundingClientRect();
+        const percent = (touch.clientX - rect.left) / rect.width;
+        const newTime = percent * media.duration;
+        
+        media.currentTime = Math.max(0, Math.min(newTime, media.duration));
+    });
+
+    bar.addEventListener('touchend', () => {
+        isTouching = false;
+        media.play();
+    });
+}
+
+setupTouchScrubbing(audioPlayer, seekBar);
+
+
+
         seekBar.addEventListener('input', () => {
             audioPlayer.currentTime = seekBar.value;
         });
@@ -607,6 +637,7 @@
             vidPlayer.addEventListener('pause', () => { vidPlayBtn.textContent = 'PLAY'; });
 
             setupSmoothProgress(vidPlayer, vidSeekBar, vidTimeDisplay);
+setupTouchScrubbing(vidPlayer, vidSeekBar);
 
             vidPlayer.addEventListener('loadedmetadata', () => {
                 vidSeekBar.max = vidPlayer.duration;
