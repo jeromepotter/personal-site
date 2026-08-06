@@ -417,45 +417,82 @@
         }
 
         // Draw the waveform frame by frame
-        function drawOscilloscope() {
-            requestAnimationFrame(drawOscilloscope);
+       function drawOscilloscope() {
+    requestAnimationFrame(drawOscilloscope);
 
-            canvas.width = canvas.clientWidth * window.devicePixelRatio;
-            canvas.height = canvas.clientHeight * window.devicePixelRatio;
+    canvas.width = canvas.clientWidth * window.devicePixelRatio;
+    canvas.height = canvas.clientHeight * window.devicePixelRatio;
 
-            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-            canvasCtx.lineWidth = 2 * window.devicePixelRatio;
-            
-            canvasCtx.strokeStyle = '#f0bb67';
-            canvasCtx.beginPath();
+    // 1. THE PHOSPHOR TRAIL EFFECT
+    canvasCtx.fillStyle = 'rgba(0, 0, 255, 0.2)'; 
+    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    canvasCtx.lineWidth = 2 * window.devicePixelRatio;
+    canvasCtx.strokeStyle = '#f0bb67';
+    canvasCtx.beginPath();
 
-            if (analyser) {
-                const bufferLength = analyser.frequencyBinCount;
-                const dataArray = new Uint8Array(bufferLength);
-                analyser.getByteTimeDomainData(dataArray);
+    if (analyser) {
+        // --- DRAW THE WAVEFORM ---
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        analyser.getByteTimeDomainData(dataArray);
 
-                const sliceWidth = canvas.width * 1.0 / bufferLength;
-                let x = 0;
+        // --- NEW: GET FREQUENCY (EQ) DATA ---
+        const freqArray = new Uint8Array(bufferLength);
+        analyser.getByteFrequencyData(freqArray);
 
-                for (let i = 0; i < bufferLength; i++) {
-                    const v = dataArray[i] / 128.0;
-                    const y = v * canvas.height / 2;
+        // Calculate Bass (Average of the lowest 10 frequency bins)
+        let bassSum = 0;
+        for (let i = 0; i < 10; i++) { bassSum += freqArray[i]; }
+        let bassAvg = bassSum / 10; // Value between 0 and 255
 
-                    if (i === 0) {
-                        canvasCtx.moveTo(x, y);
-                    } else {
-                        canvasCtx.lineTo(x, y);
-                    }
-                    x += sliceWidth;
-                }
-            } else {
-                canvasCtx.moveTo(0, canvas.height / 2);
-                canvasCtx.lineTo(canvas.width, canvas.height / 2);
-            }
+        // Calculate Overall Volume Intensity
+        let totalSum = 0;
+        for(let i = 0; i < bufferLength; i++) { totalSum += freqArray[i]; }
+        let totalAvg = totalSum / bufferLength;
 
-            canvasCtx.lineTo(canvas.width, canvas.height / 2);
-            canvasCtx.stroke();
+        // --- EXPERIMENT 1: REACTIVE TYPOGRAPHY ---
+        const header = document.getElementById('name-header');
+        if (bassAvg > 210) { 
+            // When a heavy kick drum hits: scale it up and add a glitchy text-shadow
+            let intensity = (bassAvg - 210) / 45; 
+            header.style.transform = `scale(${1 + (intensity * 0.05)}) translateY(-${intensity * 2}px)`;
+            header.style.textShadow = `${intensity * 5}px 0 0 red, -${intensity * 5}px 0 0 cyan`;
+        } else {
+            // Return to normal
+            header.style.transform = 'scale(1) translateY(0)';
+            header.style.textShadow = 'none';
+            header.style.transition = 'transform 0.1s ease-out, text-shadow 0.1s ease-out';
         }
+
+        // --- EXPERIMENT 2: HUE SHIFTING BACKGROUND ---
+        // Base blue hue is 240. We add the totalAvg to shift it towards magenta/red when loud
+        let newHue = 240 + (totalAvg * 1.5); 
+        document.documentElement.style.setProperty('--bg-color', `hsl(${newHue}, 100%, 50%)`);
+
+        // --- DRAW THE ACTUAL LINE ---
+        const sliceWidth = canvas.width * 1.0 / bufferLength;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+            const v = dataArray[i] / 128.0;
+            const y = v * canvas.height / 2;
+
+            if (i === 0) {
+                canvasCtx.moveTo(x, y);
+            } else {
+                canvasCtx.lineTo(x, y);
+            }
+            x += sliceWidth;
+        }
+    } else {
+        canvasCtx.moveTo(0, canvas.height / 2);
+        canvasCtx.lineTo(canvas.width, canvas.height / 2);
+    }
+
+    canvasCtx.lineTo(canvas.width, canvas.height / 2);
+    canvasCtx.stroke();
+}
         
         drawOscilloscope();
 
