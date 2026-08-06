@@ -47,40 +47,26 @@
             margin-right: 0.2vw;
         }
 
-        .top-sections {
-            margin-bottom: 1.5vw;
-        }
-
         .bio-section {
             margin-bottom: 1.5vw;
         }
 
         .video-section {
             width: 100%;
+            margin-bottom: 1.5vw;
         }
 
         .section-heading {
             font-size: 1.8vw;
             font-weight: bold;
             margin: 0 0 1.5vw 0;
+            color: #f0bb67; /* Matched to contact color */
         }
 
-        .section-toggle {
-            font-size: 1.8vw;
-            cursor: pointer;
-            font-weight: bold;
-            transition: opacity 0.2s ease;
-            user-select: none;
-        }
-        .section-toggle:hover {
-            opacity: 0.4;
-        }
         .bio-content {
-            display: none;
             font-size: 1.62vw;
             line-height: 1.4;
             max-width: 100%;
-            margin-top: 1.5vw;
             text-transform: none;
         }
 
@@ -90,7 +76,6 @@
             gap: 2vw 1vw;
             list-style: none;
             padding: 0;
-            /* Slightly indented from the left edge */
             margin: 0 0 1.5vw 4vw; 
             text-align: left;
             width: 60%; 
@@ -110,6 +95,7 @@
         .media-container {
             width: 100%;
             margin-top: 1.5vw;
+            margin-bottom: 3vw;
         }
 
         /* OSCILLOSCOPE CANVAS */
@@ -187,11 +173,20 @@
 
         /* NEW VIDEO GRID STYLING */
         .video-grid {
-            display: none;
+            display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 4vw;
-            margin-top: 1.5vw;
             width: 100%;
+        }
+
+           .about-toggle {
+            margin-top: 4vw; /* This adds the padding above the section */
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+            .about-toggle:hover {
+            opacity: 0.4;
         }
 
         .video-item {
@@ -225,16 +220,7 @@
             width: 100%;
         }
 
-        .contact { 
-            margin-top: 2vw; 
-            padding-top: 2vw; 
-            font-size: 1.8vw; 
-            font-weight: bold; 
-        }
-
-        .contact a {
-            color: #f0bb67;
-        }
+       
 
         a { color: var(--text-color); text-decoration: none; }
         a:hover { text-decoration: underline; }
@@ -245,17 +231,7 @@
                 justify-content: center; 
             }
 
-            .contact {
-                margin-top: 4vw;
-                padding-top: 2vw;
-                margin-bottom: 2vw;
-                font-size: 3.5vw;
-            }
-
-            .section-toggle {
-                font-size: 3.5vw; 
-            }
-
+          
             .bio-content {
                 font-size: 3vw; 
             }
@@ -290,80 +266,11 @@
 
     <h1 id="name-header">JEROME PO<span class="kern-fix">T</span>TER</h1>
 
-    <div class="top-sections">
-        <div class="bio-section">
-            <span id="bio-toggle" class="section-toggle">[+] BIO</span>
-            <div id="bio-content" class="bio-content">
-                <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo <a href="https://open.spotify.com/playlist/0Bxn67IZfvakycGazkEyms?si=gGgZaLrES92Kfx05UM7-hA/" target="_blank" rel="noopener noreferrer">DJDS</a>, he spent 15 years recording, touring globally, and producing for artists including <a href="https://www.youtube.com/watch?v=IxGvm6btP1A" target="_blank" rel="noopener noreferrer">Kanye West</a>, <a href="https://www.youtube.com/watch?v=aiotIZtLCgc" target="_blank" rel="noopener noreferrer">Khalid</a>, and <a href="https://www.youtube.com/watch?v=waImBy8OMrs" target="_blank" rel="noopener noreferrer">Burna Boy</a>. Currently, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
-            </div>
-        </div>
-
-        <div class="video-section">
-            <span id="video-toggle" class="section-toggle">[+] VIDEO EXAMPLES</span>
-
-            <!-- 2x2 VIDEO GRID -->
-            <div id="video-content" class="video-grid">
-
-            <!-- VIDEO 1 -->
-            <div class="video-item">
-                <div class="video-title">GOLF DIRECTED BY <a href="https://www.instagram.com/p/DaOfLfpTf_b/" target="_blank" rel="noopener noreferrer">NICK WALKER</a></div>
-                <video class="portfolio-video" playsinline preload="metadata">
-                    <source src="video/golf.mp4#t=0.001" type="video/mp4">
-                </video>
-                <div class="video-controls">
-                    <div class="play-btn vid-play-btn">PLAY</div>
-                    <div class="time-display vid-time-display">0:00</div>
-                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
-                </div>
-            </div>
-
-            <!-- VIDEO 2 -->
-            <div class="video-item">
-                <div class="video-title"><a href="https://www.instagram.com/p/DGMhjjcpWrQ/" target="_blank" rel="noopener noreferrer">JORDAN</a></div>
-                <video class="portfolio-video" playsinline preload="metadata">
-                    <source src="video/jordan.mp4#t=0.001" type="video/mp4">
-                </video>
-                <div class="video-controls">
-                    <div class="play-btn vid-play-btn">PLAY</div>
-                    <div class="time-display vid-time-display">0:00</div>
-                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
-                </div>
-            </div>
-
-            <!-- VIDEO 3 -->
-            <div class="video-item">
-                <div class="video-title">LUNA LUNA</div>
-                <video class="portfolio-video" playsinline preload="metadata">
-                    <source src="video/luna.mp4#t=0.001" type="video/mp4">
-                </video>
-                <div class="video-controls">
-                    <div class="play-btn vid-play-btn">PLAY</div>
-                    <div class="time-display vid-time-display">0:00</div>
-                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
-                </div>
-            </div>
-
-            <!-- VIDEO 4 -->
-            <div class="video-item">
-                <div class="video-title">INTEL x WINDOWS</div>
-                <video class="portfolio-video" playsinline preload="metadata">
-                    <source src="video/windowsintel.mp4#t=0.001" type="video/mp4">
-                </video>
-                <div class="video-controls">
-                    <div class="play-btn vid-play-btn">PLAY</div>
-                    <div class="time-display vid-time-display">0:00</div>
-                    <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
-                </div>
-            </div>
-
-            </div>
-        </div>
-    </div>
-
     <h2 class="section-heading">AUDIO EXAMPLES</h2>
 
     <ul class="tracklist">
-        <li class="track-item" data-src="audio/Float.mp3">01</li>
+        <!-- Made the first track active by default for autoplay logic -->
+        <li class="track-item active" data-src="audio/Float.mp3">01</li>
         <li class="track-item" data-src="audio/KineTop.mp3">02</li>
         <li class="track-item" data-src="audio/FlutePiano.mp3">03</li>
         <li class="track-item" data-src="audio/ClarinetCelloVoice2.mp3">04</li>
@@ -387,12 +294,10 @@
 
     <div class="media-container">
         <audio id="main-player" crossorigin="anonymous">
-            <!-- Loading the first track by default so the player connects right away -->
             <source src="audio/Float.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
 
-        <!-- Oscilloscope Canvas injected here -->
         <canvas id="oscilloscope" class="oscilloscope-canvas"></canvas>
 
         <div class="custom-player">
@@ -402,33 +307,86 @@
         </div>
     </div>
 
-    <div class="contact">
-        <a href="mailto:jerome.potter@gmail.com">CONTACT</a>
+    <h2 class="section-heading">VIDEO EXAMPLES</h2>
+    
+    <div class="video-section">
+        <div id="video-content" class="video-grid">
+
+        <div class="video-item">
+            <div class="video-title">GOLF DIRECTED BY <a href="https://www.instagram.com/p/DaOfLfpTf_b/" target="_blank" rel="noopener noreferrer">NICK WALKER</a></div>
+            <video class="portfolio-video" playsinline preload="metadata">
+                <source src="video/golf.mp4#t=0.001" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <div class="play-btn vid-play-btn">PLAY</div>
+                <div class="time-display vid-time-display">0:00</div>
+                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
+            </div>
+        </div>
+
+        <div class="video-item">
+            <div class="video-title"><a href="https://www.instagram.com/p/DGMhjjcpWrQ/" target="_blank" rel="noopener noreferrer">JORDAN</a></div>
+            <video class="portfolio-video" playsinline preload="metadata">
+                <source src="video/jordan.mp4#t=0.001" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <div class="play-btn vid-play-btn">PLAY</div>
+                <div class="time-display vid-time-display">0:00</div>
+                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
+            </div>
+        </div>
+
+        <div class="video-item">
+            <div class="video-title">LUNA LUNA</div>
+            <video class="portfolio-video" playsinline preload="metadata">
+                <source src="video/luna.mp4#t=0.001" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <div class="play-btn vid-play-btn">PLAY</div>
+                <div class="time-display vid-time-display">0:00</div>
+                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
+            </div>
+        </div>
+
+        <div class="video-item">
+            <div class="video-title">INTEL x WINDOWS</div>
+            <video class="portfolio-video" playsinline preload="metadata">
+                <source src="video/windowsintel.mp4#t=0.001" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <div class="play-btn vid-play-btn">PLAY</div>
+                <div class="time-display vid-time-display">0:00</div>
+                <input type="range" class="seek-bar vid-seek-bar" value="0" step="0.01" min="0">
+            </div>
+        </div>
+
+        </div>
     </div>
 
+<h2 id="about-toggle" class="section-heading about-toggle">ABOUT</h2>
+    <div class="bio-section">
+        <!-- The style="display: none;" ensures it is collapsed by default -->
+        <div id="bio-content" class="bio-content" style="display: none;">
+            <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo <a href="https://open.spotify.com/playlist/0Bxn67IZfvakycGazkEyms?si=gGgZaLrES92Kfx05UM7-hA/" target="_blank" rel="noopener noreferrer">DJDS</a>, he spent 15 years recording, touring globally, and producing for artists including <a href="https://www.youtube.com/watch?v=IxGvm6btP1A" target="_blank" rel="noopener noreferrer">Kanye West</a>, <a href="https://www.youtube.com/watch?v=aiotIZtLCgc" target="_blank" rel="noopener noreferrer">Khalid</a>, and <a href="https://www.youtube.com/watch?v=waImBy8OMrs" target="_blank" rel="noopener noreferrer">Burna Boy</a>. Currently, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
+        </div>
+    </div>
+
+  <a href="mailto:jerome.potter@gmail.com" class="section-heading contact-link">CONTACT</a>
+
   <script>
-        // 1. Expandable Section Toggle Logic
-        const bioToggle = document.getElementById('bio-toggle');
+
+	// About Section Toggle Logic
+        const aboutToggle = document.getElementById('about-toggle');
         const bioContent = document.getElementById('bio-content');
-        const videoToggle = document.getElementById('video-toggle');
-        const videoContent = document.getElementById('video-content');
 
-        function setupToggle(toggle, content, label, displayValue = 'block') {
-            toggle.addEventListener('click', () => {
-                if (content.style.display === displayValue) {
-                    content.style.display = 'none';
-                    toggle.textContent = `[+] ${label}`;
-                } else {
-                    content.style.display = displayValue;
-                    toggle.textContent = `[-] ${label}`;
-                }
-            });
-        }
-
-        setupToggle(bioToggle, bioContent, 'BIO');
-        setupToggle(videoToggle, videoContent, 'VIDEO EXAMPLES', 'grid');
-
-        // 3. Audio & Custom Player Logic
+        aboutToggle.addEventListener('click', () => {
+            if (bioContent.style.display === 'none') {
+                bioContent.style.display = 'block';
+            } else {
+                bioContent.style.display = 'none';
+            }
+        });
+        // Audio & Custom Player Logic
         const audioPlayer = document.getElementById('main-player');
         const playBtn = document.getElementById('play-btn');
         const seekBar = document.getElementById('seek-bar');
@@ -449,7 +407,6 @@
             audioCtx = new AudioContext();
             analyser = audioCtx.createAnalyser();
             
-            // Defines the number of data points. 2048 is standard.
             analyser.fftSize = 2048; 
             
             source = audioCtx.createMediaElementSource(audioPlayer);
@@ -463,19 +420,16 @@
         function drawOscilloscope() {
             requestAnimationFrame(drawOscilloscope);
 
-            // Responsive high-DPI scaling
             canvas.width = canvas.clientWidth * window.devicePixelRatio;
             canvas.height = canvas.clientHeight * window.devicePixelRatio;
 
             canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
             canvasCtx.lineWidth = 2 * window.devicePixelRatio;
             
-            // Replaced generic textColor variable with the explicit CONTACT yellow hex code
             canvasCtx.strokeStyle = '#f0bb67';
             canvasCtx.beginPath();
 
             if (analyser) {
-                // If audio is initialized, draw the dynamic waveform
                 const bufferLength = analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
                 analyser.getByteTimeDomainData(dataArray);
@@ -495,7 +449,6 @@
                     x += sliceWidth;
                 }
             } else {
-                // Draw a static flat line before playback starts
                 canvasCtx.moveTo(0, canvas.height / 2);
                 canvasCtx.lineTo(canvas.width, canvas.height / 2);
             }
@@ -504,7 +457,6 @@
             canvasCtx.stroke();
         }
         
-        // Start the drawing loop immediately so the line shows on page load
         drawOscilloscope();
 
         function formatTime(seconds) {
@@ -530,6 +482,14 @@
 
         audioPlayer.addEventListener('play', () => { playBtn.textContent = 'PAUSE'; });
         audioPlayer.addEventListener('pause', () => { playBtn.textContent = 'PLAY'; });
+
+        // Autoplay Next Track Logic
+        audioPlayer.addEventListener('ended', () => {
+            const activeTrack = document.querySelector('.track-item.active');
+            if (activeTrack && activeTrack.nextElementSibling) {
+                activeTrack.nextElementSibling.click();
+            }
+        });
 
         function updateMediaProgress(media, bar, display) {
             bar.value = media.currentTime;
@@ -596,7 +556,7 @@
             });
         });
 
-        // 4. Custom Grid Video Logic (Handles Multiple Videos)
+        // Custom Grid Video Logic (Handles Multiple Videos)
         const videoItems = document.querySelectorAll('.video-item');
         const mobileVideoQuery = window.matchMedia('(max-width: 700px)');
 
