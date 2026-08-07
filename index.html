@@ -469,19 +469,27 @@
             return `${min}:${sec < 10 ? '0' : ''}${sec}`;
         }
 
-        playBtn.addEventListener('click', () => {
-            initOscilloscope();
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+     playBtn.addEventListener('click', () => {
+    initOscilloscope();
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
 
-            if (audioPlayer.paused) {
-                document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
-                audioPlayer.play();
-            } else {
-                audioPlayer.pause();
-            }
-        });
+    if (!audioPlayer.currentSrc) {
+        const activeTrack = document.querySelector('.track-item.active');
+        if (activeTrack) {
+            activeTrack.click();
+        }
+        return; 
+    }
+
+    if (audioPlayer.paused) {
+        document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
+        audioPlayer.play();
+    } else {
+        audioPlayer.pause();
+    }
+         });
 
         audioPlayer.addEventListener('play', () => { playBtn.textContent = 'PAUSE'; });
         audioPlayer.addEventListener('pause', () => { playBtn.textContent = 'PLAY'; });
