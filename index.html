@@ -211,6 +211,8 @@
             cursor: pointer;
         }
 
+
+
         .video-controls {
             display: flex;
             align-items: center;
@@ -219,8 +221,6 @@
             font-weight: bold;
             width: 100%;
         }
-
-       
 
         a { color: var(--text-color); text-decoration: none; }
         a:hover { text-decoration: underline; }
@@ -259,6 +259,8 @@
             h1 {
                 font-size: 5vw;
             }
+
+
         }
     </style>
 </head>
@@ -293,8 +295,8 @@
     </ul>
 
     <div class="media-container">
+        <!-- AUDIO PLAYER - Source will be loaded on demand -->
         <audio id="main-player" crossorigin="anonymous">
-            <source src="audio/Float.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
 
@@ -367,7 +369,7 @@
     <div class="bio-section">
         <!-- The style="display: none;" ensures it is collapsed by default -->
         <div id="bio-content" class="bio-content" style="display: none;">
-            <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo <a href="https://open.spotify.com/playlist/0Bxn67IZfvakycGazkEyms?si=gGgZaLrES92Kfx05UM7-hA/" target="_blank" rel="noopener noreferrer">DJDS</a>, he spent 15 years recording, touring globally, and producing for artists including <a href="https://www.youtube.com/watch?v=IxGvm6btP1A" target="_blank" rel="noopener noreferrer">Kanye West</a>, <a href="https://www.youtube.com/watch?v=aiotIZtLCgc" target="_blank" rel="noopener noreferrer">Khalid</a>, and <a href="https://www.youtube.com/watch?v=waImBy8OMrs" target="_blank" rel="noopener noreferrer">Burna Boy</a>. Currently, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
+            <p>Jerome Potter is a Grammy-nominated music producer and composer based in Carmel Valley, CA. As half of the electronic duo <a href="https://music.apple.com/us/playlist/djds-production-discography/pl.u-YvXRuxXAdAB" target="_blank" rel="noopener noreferrer">DJDS</a>, he spent 15 years recording, touring globally, and producing for artists including <a href="https://www.youtube.com/watch?v=IxGvm6btP1A" target="_blank" rel="noopener noreferrer">Kanye West</a>, <a href="https://www.youtube.com/watch?v=aiotIZtLCgc" target="_blank" rel="noopener noreferrer">Khalid</a>, and <a href="https://www.youtube.com/watch?v=waImBy8OMrs" target="_blank" rel="noopener noreferrer">Burna Boy</a>. Currently, he brings his contemporary sonic expertise to visual media, composing original music and sound design for global brands like Nike, Google, and Intel, while recently expanding into long-form documentary scoring.</p>
         </div>
     </div>
 
@@ -386,6 +388,7 @@
                 bioContent.style.display = 'none';
             }
         });
+
         // Audio & Custom Player Logic
         const audioPlayer = document.getElementById('main-player');
         const playBtn = document.getElementById('play-btn');
@@ -530,40 +533,38 @@
             seekBar.max = audioPlayer.duration;
         });
 
-
         function setupTouchScrubbing(media, bar) {
-    let isTouching = false;
+            let isTouching = false;
 
-    bar.addEventListener('touchstart', () => {
-        isTouching = true;
-        media.pause();
-    });
+            bar.addEventListener('touchstart', () => {
+                isTouching = true;
+                media.pause();
+            });
 
-    bar.addEventListener('touchmove', (e) => {
-        if (!isTouching) return;
-        
-        const touch = e.touches[0];
-        const rect = bar.getBoundingClientRect();
-        const percent = (touch.clientX - rect.left) / rect.width;
-        const newTime = percent * media.duration;
-        
-        media.currentTime = Math.max(0, Math.min(newTime, media.duration));
-    });
+            bar.addEventListener('touchmove', (e) => {
+                if (!isTouching) return;
+                
+                const touch = e.touches[0];
+                const rect = bar.getBoundingClientRect();
+                const percent = (touch.clientX - rect.left) / rect.width;
+                const newTime = percent * media.duration;
+                
+                media.currentTime = Math.max(0, Math.min(newTime, media.duration));
+            });
 
-    bar.addEventListener('touchend', () => {
-        isTouching = false;
-        media.play();
-    });
-}
+            bar.addEventListener('touchend', () => {
+                isTouching = false;
+                media.play();
+            });
+        }
 
-setupTouchScrubbing(audioPlayer, seekBar);
-
-
+        setupTouchScrubbing(audioPlayer, seekBar);
 
         seekBar.addEventListener('input', () => {
             audioPlayer.currentTime = seekBar.value;
         });
 
+        // LAZY LOAD AUDIO: Only set source when track is clicked
         tracks.forEach(track => {
             track.addEventListener('click', function() {
                 initOscilloscope();
@@ -575,7 +576,13 @@ setupTouchScrubbing(audioPlayer, seekBar);
                 this.classList.add('active');
 
                 const newSrc = this.getAttribute('data-src');
-                audioPlayer.src = newSrc;
+                
+                // Clear existing source and add new one
+                audioPlayer.innerHTML = '';
+                const source = document.createElement('source');
+                source.src = newSrc;
+                source.type = 'audio/mpeg';
+                audioPlayer.appendChild(source);
                 audioPlayer.load();
 
                 document.querySelectorAll('.portfolio-video').forEach(v => v.pause());
@@ -586,33 +593,14 @@ setupTouchScrubbing(audioPlayer, seekBar);
             });
         });
 
-        // Custom Grid Video Logic (Handles Multiple Videos)
+        // LAZY LOAD VIDEO: Videos already load with preload="metadata" for poster frames
         const videoItems = document.querySelectorAll('.video-item');
-        const mobileVideoQuery = window.matchMedia('(max-width: 700px)');
-
-        function showMobileFirstFrame(video) {
-            if (!mobileVideoQuery.matches || video.dataset.mobileFrameReady === 'true') {
-                return;
-            }
-
-            const setFrame = () => {
-                if (video.readyState >= 1) {
-                    video.currentTime = 0.001;
-                    video.dataset.mobileFrameReady = 'true';
-                }
-            };
-
-            video.addEventListener('loadedmetadata', setFrame, { once: true });
-            video.load();
-        }
 
         videoItems.forEach(item => {
             const vidPlayer = item.querySelector('.portfolio-video');
             const vidPlayBtn = item.querySelector('.vid-play-btn');
             const vidTimeDisplay = item.querySelector('.vid-time-display');
             const vidSeekBar = item.querySelector('.vid-seek-bar');
-
-            showMobileFirstFrame(vidPlayer);
 
             function toggleVideo() {
                 if (vidPlayer.paused) {
@@ -637,7 +625,7 @@ setupTouchScrubbing(audioPlayer, seekBar);
             vidPlayer.addEventListener('pause', () => { vidPlayBtn.textContent = 'PLAY'; });
 
             setupSmoothProgress(vidPlayer, vidSeekBar, vidTimeDisplay);
-setupTouchScrubbing(vidPlayer, vidSeekBar);
+            setupTouchScrubbing(vidPlayer, vidSeekBar);
 
             vidPlayer.addEventListener('loadedmetadata', () => {
                 vidSeekBar.max = vidPlayer.duration;
